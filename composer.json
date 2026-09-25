@@ -22,7 +22,7 @@
         "ext-zip": "*",
         "fakerphp/faker": "^1.24",
         "n98/junit-xml": "~1.0",
-        "nesbot/carbon": "^2.73",
+        "nesbot/carbon": "^3.14",
         "psy/psysh": "^0.12",
         "rmccue/requests": "^2.0.11",
         "symfony/console": "^6.4",

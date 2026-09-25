@@ -9,6 +9,7 @@ First release of the fork https://github.com/MarcoKriechbaumer/n98-magerun-php8
 - Break: Require PHP 8.2 - 8.5, dropped PHP 7.4 - 8.1
 - Break: Installer offers OpenMage LTS 20.10.0 and newer only
 - Break: self-update and releases use the GitHub releases of this fork
+- Break: Composer package renamed to `marcokriechbaumer/n98-magerun-php8`
 - Imp: Update 3rd party dependencies (Symfony 6.4 LTS, Twig, psysh, Faker, PHPStan, Rector, PHP-CS-Fixer)
 - Imp: Add OpenMage 20.17.0 and 20.18.0
 - Imp: Installer installs OpenMage without dev packages

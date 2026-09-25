@@ -10,6 +10,8 @@ This is a fork of `netz98/n98-magerun <https://github.com/netz98/n98-magerun>`_,
 current OpenMage LTS releases. All credits for the original tool go to netz98, valantic CEC and the upstream
 contributors.
 
+Maintained by Marco Kriechbaumer - `Magento 1 / OpenMage development <https://corecommerce.ge>`_.
+
 .. image:: https://github.com/MarcoKriechbaumer/n98-magerun-php8/actions/workflows/workflow.yml/badge.svg
    :target: https://github.com/MarcoKriechbaumer/n98-magerun-php8/actions/workflows/workflow.yml
 
@@ -104,8 +106,8 @@ be useful if you exchange scripts that are making use of magerun with other user
 Install with Composer
 """""""""""""""""""""
 
-The package is not published on Packagist, `composer require n98/magerun` would install the upstream version.
-Add this repository as a VCS repository to the `composer.json` of your Magento project instead:
+The package is not published on Packagist yet. Add this repository as a VCS repository to the `composer.json`
+of your Magento project:
 
 .. code-block:: json
 
@@ -122,7 +124,7 @@ Then require it and execute it from the vendor's bin folder:
 
 .. code-block:: sh
 
-    composer require n98/magerun:dev-master
+    composer require marcokriechbaumer/n98-magerun-php8:^4.0
     # ...
     ./vendor/bin/n98-magerun --version
     n98-magerun 4.0.0 by valantic CEC
@@ -149,7 +151,7 @@ The phar file contains a self-update command, which downloads the latest release
 
 Use `--dry-run` to only check for a newer version. If the file was installed system wide do not forget "sudo".
 
-If you installed with Composer, update with `composer update n98/magerun`.
+If you installed with Composer, update with `composer update marcokriechbaumer/n98-magerun-php8`.
 
 Claude skill
 ------------

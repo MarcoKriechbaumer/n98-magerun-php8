@@ -27,9 +27,9 @@ class ConflictsCommand extends AbstractRewriteCommand
             ->setName('dev:module:rewrite:conflicts')
             ->addOption(
                 'log-junit',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Log conflicts in JUnit XML format to defined file.',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Log conflicts in JUnit XML format to defined file.',
             )
             ->setDescription('Lists all magento rewrite conflicts');
     }
@@ -49,13 +49,13 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }
 
         $conflicts = [];
-        $time = microtime(true);
+        $time = microtime(as_float: true);
         $rewrites = $this->loadRewrites();
 
         foreach ($rewrites as $type => $data) {
@@ -78,7 +78,7 @@ HELP;
         }
 
         if ($input->getOption('log-junit')) {
-            $duration = microtime(true) - $time;
+            $duration = microtime(as_float: true) - $time;
             $this->logJUnit($conflicts, $input->getOption('log-junit'), $duration);
         } else {
             $this->writeOutput($output, $conflicts);

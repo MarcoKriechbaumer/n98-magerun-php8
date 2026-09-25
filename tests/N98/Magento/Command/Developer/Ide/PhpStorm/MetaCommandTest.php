@@ -21,7 +21,7 @@ final class MetaCommandTest extends TestCase
             ['command'  => $command->getName(), '--stdout' => true],
         );
 
-        $fileContent = $commandTester->getDisplay(true);
+        $fileContent = $commandTester->getDisplay(normalize: true);
 
         $this->assertStringContainsString('\'catalog\' => \Mage_Catalog_Helper_Data', $fileContent);
         $this->assertStringContainsString('\'core/config\' => \Mage_Core_Model_Config', $fileContent);

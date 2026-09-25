@@ -38,7 +38,7 @@ class ScriptCommand extends AbstractMagentoCommand
             ->setName('script')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Script file')
             ->addOption('define', 'd', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Defines a variable')
-            ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stops execution of script on error')
+            ->addOption('stop-on-error', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Stops execution of script on error')
             ->setDescription('Runs multiple n98-magerun commands')
         ;
     }
@@ -170,7 +170,7 @@ HELP;
 
         if ((is_countable($defines) ? count($defines) : 0) > 0) {
             foreach ($defines as $define) {
-                if (in_array(strstr($define, '='), ['', '0'], true) || strstr($define, '=') === false) {
+                if (in_array(strstr($define, '='), ['', '0'], strict: true) || strstr($define, '=') === false) {
                     throw new InvalidArgumentException('Invalid define');
                 }
 
@@ -199,7 +199,7 @@ HELP;
             $script = @\file_get_contents($filename);
         }
 
-        if (in_array($script, ['', '0', false], true)) {
+        if (in_array($script, ['', '0', false], strict: true)) {
             throw new RuntimeException('Script file was not found');
         }
 
@@ -233,7 +233,7 @@ HELP;
                         );
                         $selectedIndex = $dialog->ask($input, $output, $question);
 
-                        $this->scriptVars[$matches[1]] = array_search($selectedIndex, $choices, true); # @todo check cmuench $choices[$selectedIndex]
+                        $this->scriptVars[$matches[1]] = array_search($selectedIndex, $choices, strict: true); # @todo check cmuench $choices[$selectedIndex]
                     } else {
                         throw new RuntimeException('Invalid choices');
                     }
@@ -263,12 +263,12 @@ HELP;
      */
     protected function runMagerunCommand(InputInterface $input, OutputInterface $output, string $commandString): void
     {
-        $this->getApplication()->setAutoExit(false);
+        $this->getApplication()->setAutoExit(boolean: false);
         $commandString = $this->_replaceScriptVars($commandString);
         $input = new StringInput($commandString);
         $exitCode = $this->getApplication()->run($input, $output);
         if ($exitCode !== 0 && $this->_stopOnError) {
-            $this->getApplication()->setAutoExit(true);
+            $this->getApplication()->setAutoExit(boolean: true);
             throw new RuntimeException('Script stopped with errors', $exitCode);
         }
     }
@@ -313,7 +313,7 @@ HELP;
     {
         $commandString = $this->_prepareShellCommand($commandString);
         $returnValue = shell_exec($commandString);
-        if (!(in_array($returnValue, ['', '0', false, null], true))) {
+        if (!(in_array($returnValue, ['', '0', false, null], strict: true))) {
             $output->writeln($returnValue);
         }
     }

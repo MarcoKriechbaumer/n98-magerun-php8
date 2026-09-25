@@ -33,6 +33,13 @@ class DatabaseHelper extends AbstractHelper
 
     protected ?array $_tables = null;
 
+    private ?BaseApplication $baseApplication = null;
+
+    public function setApplication(BaseApplication $baseApplication): void
+    {
+        $this->baseApplication = $baseApplication;
+    }
+
     public function detectDbSettings(OutputInterface $output, ?string $connectionNode = null): void
     {
         if (!is_null($this->dbSettings)) {
@@ -124,7 +131,7 @@ class DatabaseHelper extends AbstractHelper
     {
         $statement = $this->getConnection()->query(sprintf('SELECT @@%s;', $variable));
         if (false === $statement) {
-            throw new RuntimeException(sprintf('Failed to query mysql variable %s', var_export($variable, true)));
+            throw new RuntimeException(sprintf('Failed to query mysql variable %s', var_export($variable, return: true)));
         }
 
         $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -153,7 +160,7 @@ class DatabaseHelper extends AbstractHelper
     {
         $type = is_null($type) ? '@@' : $type;
 
-        if (!in_array($type, ['@@', '@'], true)) {
+        if (!in_array($type, ['@@', '@'], strict: true)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid mysql variable type "%s", must be "@@" (system) or "@" (session)', $type),
             );
@@ -172,7 +179,7 @@ class DatabaseHelper extends AbstractHelper
                 : 'no error info';
 
             throw new RuntimeException(
-                sprintf('Failed to query mysql variable %s: %s', var_export($name, true), $reason),
+                sprintf('Failed to query mysql variable %s: %s', var_export($name, return: true), $reason),
             );
         }
 
@@ -238,7 +245,7 @@ class DatabaseHelper extends AbstractHelper
     public function resolveTables(array $list, array $definitions = [], array $resolved = []): array
     {
         if (is_null($this->_tables)) {
-            $this->_tables = (array) $this->getTables(true);
+            $this->_tables = (array) $this->getTables(withoutPrefix: true);
         }
 
         $resolvedList = [];
@@ -329,7 +336,7 @@ class DatabaseHelper extends AbstractHelper
                 $item = array_reduce($item, [$this, 'resolveTablesArray'], (array) $carry);
             }
         } else {
-            throw new InvalidArgumentException(sprintf('Unable to handle %s', var_export($item, true)));
+            throw new InvalidArgumentException(sprintf('Unable to handle %s', var_export($item, return: true)));
         }
 
         return array_merge((array) $carry, $item);
@@ -374,7 +381,7 @@ class DatabaseHelper extends AbstractHelper
             // @codeCoverageIgnoreStart
             $this->throwRuntimeException(
                 $statement,
-                sprintf('Failed to obtain tables from database: %s', var_export($query, true)),
+                sprintf('Failed to obtain tables from database: %s', var_export($query, return: true)),
             );
         } // @codeCoverageIgnoreEnd
 
@@ -515,7 +522,7 @@ class DatabaseHelper extends AbstractHelper
     public function createDatabase(OutputInterface $output): void
     {
         $this->detectDbSettings($output);
-        $pdo = $this->getConnection();
+        $pdo = $this->getDbSettings($output)->getConnection(false);
         $pdo->query('CREATE DATABASE IF NOT EXISTS `' . $this->dbSettings['dbname'] . '`');
 
         $output->writeln('<info>Created database</info> <comment>' . $this->dbSettings['dbname'] . '</comment>');
@@ -576,13 +583,7 @@ class DatabaseHelper extends AbstractHelper
      */
     private function getApplication()
     {
-        $command = $this->getHelperSet()->getCommand();
-
-        if ($command) {
-            return $command->getApplication();
-        }
-
-        return new Application();
+        return $this->baseApplication ?? new Application();
     }
 
     /**

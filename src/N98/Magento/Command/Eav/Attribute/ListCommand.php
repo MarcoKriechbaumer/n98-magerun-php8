@@ -26,9 +26,9 @@ class ListCommand extends AbstractMagentoCommand
         $this
             ->setName('eav:attribute:list')
             ->setDescription('Lists all EAV attributes')
-            ->addOption('filter-type', null, InputOption::VALUE_OPTIONAL, 'Filter attributes by entity type')
-            ->addOption('add-source', null, InputOption::VALUE_NONE, 'Add source models to list')
-            ->addOption('add-backend', null, InputOption::VALUE_NONE, 'Add backend type to list')
+            ->addOption('filter-type', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Filter attributes by entity type')
+            ->addOption('add-source', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Add source models to list')
+            ->addOption('add-backend', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Add backend type to list')
             ->addFormatOption();
     }
 

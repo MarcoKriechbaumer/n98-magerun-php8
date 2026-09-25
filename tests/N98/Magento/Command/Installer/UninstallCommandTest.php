@@ -70,7 +70,7 @@ final class UninstallCommandTest extends TestCase
      */
     private function getInputStream($input)
     {
-        $stream = fopen('php://memory', 'rb+', false);
+        $stream = fopen('php://memory', 'rb+', use_include_path: false);
         fwrite($stream, $input);
         rewind($stream);
         return $stream;

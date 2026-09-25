@@ -65,7 +65,7 @@ class ScriptLoader
 
         $finder = Finder::create()
             ->files()->followLinks()
-            ->ignoreUnreadableDirs(true)
+            ->ignoreUnreadableDirs(ignore: true)
             ->name('*.magerun')
             ->in($scriptFolders);
 

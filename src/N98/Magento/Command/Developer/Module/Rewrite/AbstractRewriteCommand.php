@@ -116,7 +116,7 @@ abstract class AbstractRewriteCommand extends AbstractMagentoCommand
                 $finder = new Finder();
                 $finder
                     ->files()
-                    ->ignoreUnreadableDirs(true)
+                    ->ignoreUnreadableDirs(ignore: true)
                     ->followLinks()
                     ->in($folder);
                 foreach ($finder as $file) {

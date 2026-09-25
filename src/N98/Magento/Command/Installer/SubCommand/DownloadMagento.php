@@ -46,7 +46,7 @@ class DownloadMagento extends AbstractSubCommand
             $skipInstallation = $dialog->ask(
                 $this->input,
                 $this->output,
-                new ConfirmationQuestion('<question>A magento installation already exists in this folder. Skip download?</question> <comment>[y]</comment>: ', true),
+                new ConfirmationQuestion('<question>A magento installation already exists in this folder. Skip download?</question> <comment>[y]</comment>: ', default: true),
             );
 
             if ($skipInstallation) {
@@ -88,7 +88,7 @@ class DownloadMagento extends AbstractSubCommand
         $process->start();
 
         $code = $process->wait(function ($type, $buffer): void {
-            $this->output->write($buffer, false, OutputInterface::OUTPUT_RAW);
+            $this->output->write($buffer, newline: false, options: OutputInterface::OUTPUT_RAW);
         });
 
         if (Exec::CODE_CLEAN_EXIT !== $code) {
@@ -114,17 +114,26 @@ class DownloadMagento extends AbstractSubCommand
         $process->setTimeout(86400);
         $process->start();
         $process->wait(function ($type, $buffer): void {
-            $this->output->write('composer > ' . $buffer, false);
+            $this->output->write('composer > ' . $buffer, newline: false);
         });
     }
 
     protected function composerInstall(): void
     {
-        $process = new Process(array_merge($this->config['composer_bin'], ['install']));
+        // dev packages are not needed for a shop, the lock files of OpenMage 20.10 - 20.16 also reference
+        // commits of dev packages that do not exist anymore
+        $process = new Process(array_merge($this->config['composer_bin'], ['install', '--no-dev']));
         $process->setTimeout(86400);
         $process->start();
-        $process->wait(function ($type, $buffer): void {
-            $this->output->write('composer > ' . $buffer, false);
+
+        $code = $process->wait(function ($type, $buffer): void {
+            $this->output->write('composer > ' . $buffer, newline: false);
         });
+
+        if (Exec::CODE_CLEAN_EXIT !== $code) {
+            throw new RuntimeException(
+                'Non-zero exit code for composer install command: ' . $process->getCommandLine(),
+            );
+        }
     }
 }

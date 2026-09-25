@@ -55,7 +55,7 @@ class ReportCommand extends AbstractCacheCommand
         $cacheIds = $cacheInstance->getIds();
         $table = [];
         foreach ($cacheIds as $cacheId) {
-            if ($input->getOption('filter-id') !== null && (in_array(stristr($cacheId, (string) $input->getOption('filter-id')), ['', '0'], true) || stristr($cacheId, (string) $input->getOption('filter-id')) === false)) {
+            if ($input->getOption('filter-id') !== null && (in_array(stristr($cacheId, (string) $input->getOption('filter-id')), ['', '0'], strict: true) || stristr($cacheId, (string) $input->getOption('filter-id')) === false)) {
                 continue;
             }
 

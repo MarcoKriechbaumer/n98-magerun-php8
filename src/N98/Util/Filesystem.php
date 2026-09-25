@@ -21,7 +21,7 @@ class Filesystem
     public function recursiveCopy(string $src, string $dst, array $blacklist = []): void
     {
         if (!is_dir($dst)) {
-            @mkdir($dst, 0777, true);
+            @mkdir($dst, 0777, recursive: true);
         }
 
         if (!is_dir($dst)) {
@@ -85,7 +85,7 @@ class Filesystem
         while (false !== ($file = readdir($handle))) {
             // if the file-pointer is not the current directory
             // or the parent directory
-            if (in_array($file, $skip)) {
+            if (in_array($file, $skip, strict: true)) {
                 continue;
             }
 

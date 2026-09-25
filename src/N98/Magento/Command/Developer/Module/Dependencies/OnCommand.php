@@ -43,7 +43,7 @@ class OnCommand extends AbstractMagentoCommand
             $this->writeSection($output, sprintf('List of module %s dependencies', $moduleName));
         }
 
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         $this->initMagento();
 
         try {

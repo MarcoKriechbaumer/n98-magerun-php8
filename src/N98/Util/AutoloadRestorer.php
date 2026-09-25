@@ -36,6 +36,22 @@ class AutoloadRestorer
         }
     }
 
+    /**
+     * move all snapshot callbacks in front of autoload callbacks registered later on (e.g. Magento's composer
+     * autoloader), so classes of shared vendor packages are resolved with the versions n98-magerun ships
+     */
+    public function prepend(): void
+    {
+        if (!$this->snapshot) {
+            return;
+        }
+
+        foreach (array_reverse($this->snapshot) as $callback) {
+            spl_autoload_unregister($callback);
+            spl_autoload_register($callback, throw: true, prepend: true);
+        }
+    }
+
     private function getUnregisteredLoaders(): array
     {
         $unregistered   = [];
@@ -46,7 +62,7 @@ class AutoloadRestorer
         }
 
         foreach ($this->snapshot as $callback) {
-            if (in_array($callback, $current, true)) {
+            if (in_array($callback, $current, strict: true)) {
                 continue;
             }
 

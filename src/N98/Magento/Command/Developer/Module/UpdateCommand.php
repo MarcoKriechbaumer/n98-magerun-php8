@@ -53,51 +53,51 @@ class UpdateCommand extends AbstractMagentoCommand
             ->setName('dev:module:update')
             ->addArgument('vendorNamespace', InputArgument::REQUIRED, 'Namespace (your company prefix)')
             ->addArgument('moduleName', InputArgument::REQUIRED, 'Name of your module.')
-            ->addOption('set-version', null, InputOption::VALUE_NONE, 'Set module version in config.xml')
-            ->addOption('add-blocks', null, InputOption::VALUE_NONE, 'Adds blocks class to config.xml')
-            ->addOption('add-helpers', null, InputOption::VALUE_NONE, 'Adds helpers class to config.xml')
-            ->addOption('add-models', null, InputOption::VALUE_NONE, 'Adds models class to config.xml')
+            ->addOption('set-version', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Set module version in config.xml')
+            ->addOption('add-blocks', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds blocks class to config.xml')
+            ->addOption('add-helpers', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds helpers class to config.xml')
+            ->addOption('add-models', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds models class to config.xml')
             ->addOption(
                 'add-all',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds blocks, helpers and models classes to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds blocks, helpers and models classes to config.xml',
             )
             ->addOption(
                 'add-resource-model',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds resource model class and entities to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds resource model class and entities to config.xml',
             )
             ->addOption(
                 'add-routers',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds routers for frontend or admin areas to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds routers for frontend or admin areas to config.xml',
             )
             ->addOption(
                 'add-events',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds events observer to global, frontend or adminhtml areas to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds events observer to global, frontend or adminhtml areas to config.xml',
             )
             ->addOption(
                 'add-layout-updates',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds layout updates to frontend or adminhtml areas to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds layout updates to frontend or adminhtml areas to config.xml',
             )
             ->addOption(
                 'add-translate',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds translate configuration to frontend or adminhtml areas to config.xml',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds translate configuration to frontend or adminhtml areas to config.xml',
             )
             ->addOption(
                 'add-default',
-                null,
-                InputOption::VALUE_NONE,
-                'Adds default value (related to system.xml groups/fields)',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Adds default value (related to system.xml groups/fields)',
             )
             ->setDescription('Update a Magento module.');
     }
@@ -169,6 +169,12 @@ class UpdateCommand extends AbstractMagentoCommand
             $this->codePool = 'local';
         }
 
+        if (!isset($this->codePool)) {
+            throw new RuntimeException(
+                sprintf('Module %s is not located in local or community code pool', $this->getModuleNamespace()),
+            );
+        }
+
         return $this->codePool;
     }
 
@@ -213,7 +219,7 @@ class UpdateCommand extends AbstractMagentoCommand
 
             $dialog = $this->getQuestionHelper();
             $question = new Question('<question>Enter version number:</question> ');
-            $version = trim($dialog->ask($input, $output, $question));
+            $version = trim((string) $dialog->ask($input, $output, $question));
             $modulesNode->version = $version;
         }
     }
@@ -250,12 +256,12 @@ class UpdateCommand extends AbstractMagentoCommand
 
         $question = new ConfirmationQuestion(
             '<question>Would you like to also add a Resource Model(y/n)?</question>',
-            false,
+            default: false,
         );
 
         if ($questionHelper->ask($input, $output, $question)) {
             $question = new Question('<question>Resource Model:</question> ');
-            $resourceModel = trim($questionHelper->ask($input, $output, $question));
+            $resourceModel = trim((string) $questionHelper->ask($input, $output, $question));
             $configXml->global->models
                 ->{$this->getLowercaseModuleNamespace()}->addChild('resourceModel', $resourceModel);
         }
@@ -412,7 +418,7 @@ class UpdateCommand extends AbstractMagentoCommand
 
         $question = new ConfirmationQuestion(
             '<question>Would you like to set mysql4 deprecated node(y/n)?</question>',
-            false,
+            default: false,
         );
         if ($questionHelper->ask($input, $output, $question)) {
             $this->configNodes['resource_deprecated_mysql4_node'] = true;
@@ -422,13 +428,13 @@ class UpdateCommand extends AbstractMagentoCommand
 
         while ($entityName) {
             $question = new Question('<question>Entity Name (leave blank to exit):</question> ');
-            $entityName = trim($questionHelper->ask($input, $output, $question));
+            $entityName = trim((string) $questionHelper->ask($input, $output, $question));
             if ($entityName === '' || $entityName === '0') {
                 break;
             }
 
             $question = new Question('<question>Entity Table:</question> ');
-            $entityTable = trim($questionHelper->ask($input, $output, $question));
+            $entityTable = trim((string) $questionHelper->ask($input, $output, $question));
             $this->configNodes['resource_entities'][$entityName] = $entityTable;
         }
     }
@@ -448,13 +454,13 @@ class UpdateCommand extends AbstractMagentoCommand
             '<question>Area (frontend|admin):</question> ',
             ['frontend', 'admin'],
         );
-        $area = trim($questionHelper->ask($input, $output, $question));
+        $area = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Use:</question> ');
-        $use = trim($questionHelper->ask($input, $output, $question));
+        $use = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Frontname:</question> ');
-        $frontName = trim($questionHelper->ask($input, $output, $question));
+        $frontName = trim((string) $questionHelper->ask($input, $output, $question));
 
         if ($area !== 'frontend' && $area !== 'admin') {
             throw new RuntimeException('Router area must be either "frontend" or "admin"');
@@ -480,21 +486,21 @@ class UpdateCommand extends AbstractMagentoCommand
             '<question>Area (global|frontend|adminhtml):</question> ',
             ['global', 'frontend', 'admin'],
         );
-        $area = trim($questionHelper->ask($input, $output, $question));
+        $area = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Event:</question> ');
-        $event = trim($questionHelper->ask($input, $output, $question));
+        $event = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Event Observer:</question> ');
-        $observer = trim($questionHelper->ask($input, $output, $question));
+        $observer = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Event Observer Class:</question> ');
-        $observerClass = trim($questionHelper->ask($input, $output, $question));
+        $observerClass = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Event Observer Method:</question> ');
-        $observerMethod = trim($questionHelper->ask($input, $output, $question));
+        $observerMethod = trim((string) $questionHelper->ask($input, $output, $question));
 
-        if (!in_array($area, ['global', 'frontend', 'adminhtml'], true)) {
+        if (!in_array($area, ['global', 'frontend', 'adminhtml'], strict: true)) {
             throw new RuntimeException('Event area must be either "global", "frontend" or "adminhtml"');
         }
 
@@ -520,13 +526,13 @@ class UpdateCommand extends AbstractMagentoCommand
             '<question>Area (frontend|admin):</question> ',
             ['frontend', 'admin'],
         );
-        $area = trim($questionHelper->ask($input, $output, $question));
+        $area = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>Module:</question> ');
-        $module = trim($questionHelper->ask($input, $output, $question));
+        $module = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>File:</question> ');
-        $file = trim($questionHelper->ask($input, $output, $question));
+        $file = trim((string) $questionHelper->ask($input, $output, $question));
 
         if ($area !== 'frontend' && $area !== 'adminhtml') {
             throw new RuntimeException('Layout updates area must be either "frontend" or "adminhtml"');
@@ -552,10 +558,10 @@ class UpdateCommand extends AbstractMagentoCommand
             '<question>Area (frontend|admin):</question> ',
             ['frontend', 'admin'],
         );
-        $area = trim($questionHelper->ask($input, $output, $question));
+        $area = trim((string) $questionHelper->ask($input, $output, $question));
 
         $question = new Question('<question>File:</question> ');
-        $file = trim($questionHelper->ask($input, $output, $question));
+        $file = trim((string) $questionHelper->ask($input, $output, $question));
 
         if ($area !== 'frontend' && $area !== 'adminhtml') {
             throw new RuntimeException('Layout updates area must be either "frontend" or "adminhtml"');
@@ -577,16 +583,16 @@ class UpdateCommand extends AbstractMagentoCommand
         $questionHelper = $this->getQuestionHelper();
 
         $question = new Question('<question>Section Name (lowercase):</question> ');
-        $sectionName = strtolower(trim($questionHelper->ask($input, $output, $question)));
+        $sectionName = strtolower(trim((string) $questionHelper->ask($input, $output, $question)));
 
         $question = new Question('<question>Group Name (lowercase):</question> ');
-        $groupName = strtolower(trim($questionHelper->ask($input, $output, $question)));
+        $groupName = strtolower(trim((string) $questionHelper->ask($input, $output, $question)));
 
         $question = new Question('<question>Field Name:</question> ');
-        $fieldName = strtolower(trim($questionHelper->ask($input, $output, $question)));
+        $fieldName = strtolower(trim((string) $questionHelper->ask($input, $output, $question)));
 
         $question = new Question('<question>Field Value:</question> ');
-        $fieldValue = strtolower(trim($questionHelper->ask($input, $output, $question)));
+        $fieldValue = strtolower(trim((string) $questionHelper->ask($input, $output, $question)));
 
         $this->configNodes['default_section_name'] = $sectionName;
         $this->configNodes['default_group_name'] = $groupName;

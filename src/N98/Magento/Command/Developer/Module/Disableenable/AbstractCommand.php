@@ -34,7 +34,7 @@ class AbstractCommand extends AbstractMagentoCommand
         $this
             ->setName('dev:module:' . $this->commandName)
             ->addArgument('moduleName', InputArgument::OPTIONAL, 'Name of module to ' . $this->commandName)
-            ->addOption('codepool', null, InputOption::VALUE_OPTIONAL, 'Name of codePool to ' . $this->commandName)
+            ->addOption('codepool', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Name of codePool to ' . $this->commandName)
             ->setDescription(ucwords($this->commandName) . ' a module or all modules in codePool');
     }
 
@@ -43,7 +43,7 @@ class AbstractCommand extends AbstractMagentoCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (false === $this->initMagento()) {
             throw new RuntimeException('Magento could not be loaded');
         }

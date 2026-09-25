@@ -7,6 +7,9 @@ parameters:
       - src
     scanDirectories:
       - magento
+    excludePaths:
+      analyseAndScan:
+        - magento/vendor/magento-hackathon/magento-composer-installer/tests (?)
     level: 7
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
@@ -15,3 +18,8 @@ parameters:
         - identifier: offsetAccess.notFound
         - identifier: property.notFound
         - identifier: property.unusedType
+        # reported only when OpenMage is installed without its composer patches
+        -
+            message: '#^Cannot call method getSize\(\) on Mage_Core_Model_Resource_Db_Collection_Abstract\|false\.$#'
+            path: src/N98/Magento/Command/System/InfoCommand.php
+            reportUnmatched: false

@@ -27,19 +27,19 @@ class DeleteCommand extends AbstractConfigCommand
             ->addArgument('path', InputArgument::REQUIRED, 'The config path')
             ->addOption(
                 'scope',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                "The config value's scope (default, websites, stores)",
-                'default',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: "The config value's scope (default, websites, stores)",
+                default: 'default',
             )
-            ->addOption('scope-id', null, InputOption::VALUE_OPTIONAL, "The config value's scope ID", '0')
+            ->addOption('scope-id', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: "The config value's scope ID", default: '0')
             ->addOption(
                 'force',
-                null,
-                InputOption::VALUE_NONE,
-                "Allow deletion of non-standard scope-id's for websites and stores",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "Allow deletion of non-standard scope-id's for websites and stores",
             )
-            ->addOption('all', null, InputOption::VALUE_NONE, 'Delete all entries by path')
+            ->addOption('all', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Delete all entries by path')
         ;
     }
 
@@ -52,7 +52,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
 
         if (!$this->initMagento()) {
             return Command::FAILURE;

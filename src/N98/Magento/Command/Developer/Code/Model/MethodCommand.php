@@ -7,6 +7,7 @@ namespace N98\Magento\Command\Developer\Code\Model;
 use InvalidArgumentException;
 use Mage;
 use Mage_Core_Model_Abstract;
+use Mage_Eav_Model_Entity_Abstract;
 use N98\Magento\Command\AbstractMagentoCommand;
 use PDO;
 use RuntimeException;
@@ -61,7 +62,7 @@ class MethodCommand extends AbstractMagentoCommand
     {
         $this->_input = $input;
         $this->_output = $output;
-        $this->detectMagento($this->_output, true);
+        $this->detectMagento($this->_output, silent: true);
         if (false === $this->initMagento()) {
             throw new RuntimeException('Magento could not be loaded');
         }
@@ -239,8 +240,14 @@ class MethodCommand extends AbstractMagentoCommand
             throw new InvalidArgumentException('Model ' . $modelName . ' not found!');
         }
 
-        $this->_mageModelTable = $this->_mageModel->getResource()
-            ? $this->_mageModel->getResource()->getMainTable() : null;
+        $resource = $this->_mageModel->getResource();
+        $this->_mageModelTable = null;
+        if ($resource instanceof Mage_Eav_Model_Entity_Abstract) {
+            $this->_mageModelTable = $resource->getEntityTable();
+        } elseif ($resource) {
+            $this->_mageModelTable = $resource->getMainTable();
+        }
+
         if (!isset($this->_mageModelTable) || ($this->_mageModelTable === '' || $this->_mageModelTable === '0')) {
             throw new InvalidArgumentException(
                 'Cannot find main table of model ' . $modelName,

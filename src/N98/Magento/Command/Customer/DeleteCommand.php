@@ -40,7 +40,7 @@ class DeleteCommand extends AbstractCustomerCommand
     {
         $this
             ->setName('customer:delete')
-            ->addArgument('id', InputArgument::OPTIONAL, 'Customer Id or email', false)
+            ->addArgument('id', InputArgument::OPTIONAL, 'Customer Id or email', default: false)
             ->addOption('all', 'a', InputOption::VALUE_NONE, 'Delete all customers')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force delete')
             ->addOption('range', '-r', InputOption::VALUE_NONE, 'Delete a range of customers by Id')
@@ -63,7 +63,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }
@@ -92,14 +92,14 @@ HELP;
                 $all = $this->questionHelper->ask(
                     $this->input,
                     $this->output,
-                    new ConfirmationQuestion('Delete all customers?', false),
+                    new ConfirmationQuestion('Delete all customers?', default: false),
                 );
 
                 if (!$all) {
                     $range = $this->questionHelper->ask(
                         $this->input,
                         $this->output,
-                        new ConfirmationQuestion('Delete a range of customers?', false),
+                        new ConfirmationQuestion('Delete a range of customers?', default: false),
                     );
 
                     if (!$range) {

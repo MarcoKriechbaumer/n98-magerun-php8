@@ -42,6 +42,6 @@ final class ViewCommandTest extends TestCase
             ['command'       => $command->getName(), 'id'            => 'n98-magerun-unittest', '--unserialize' => true],
         );
 
-        $this->assertSame(print_r($cacheData, true) . "\n", $commandTester->getDisplay(true));
+        $this->assertSame(print_r($cacheData, return: true) . "\n", $commandTester->getDisplay(normalize: true));
     }
 }

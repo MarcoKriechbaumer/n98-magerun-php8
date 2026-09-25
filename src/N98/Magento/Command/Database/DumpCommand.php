@@ -24,7 +24,7 @@ use Symfony\Component\Console\Question\Question;
  */
 class DumpCommand extends AbstractDatabaseCommand
 {
-    protected ?array $tableDefinitions;
+    protected ?array $tableDefinitions = null;
 
     protected array $commandConfig;
 
@@ -48,66 +48,66 @@ class DumpCommand extends AbstractDatabaseCommand
             )
             ->addOption(
                 'dump-option',
-                null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Option(s) to pass to mysqldump command. E.g. --dump-option="--set-gtid-purged=off"',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                description: 'Option(s) to pass to mysqldump command. E.g. --dump-option="--set-gtid-purged=off"',
             )
             ->addOption(
                 'xml',
-                null,
-                InputOption::VALUE_NONE,
-                'Dump database in xml format',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Dump database in xml format',
             )
             ->addOption(
                 'hex-blob',
-                null,
-                InputOption::VALUE_NONE,
-                'Dump binary columns using hexadecimal notation (for example, "abc" becomes 0x616263)',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Dump binary columns using hexadecimal notation (for example, "abc" becomes 0x616263)',
             )
             ->addOption(
                 'only-command',
-                null,
-                InputOption::VALUE_NONE,
-                'Print only mysqldump command. Do not execute',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Print only mysqldump command. Do not execute',
             )
             ->addOption(
                 'print-only-filename',
-                null,
-                InputOption::VALUE_NONE,
-                'Execute and prints no output except the dump filename',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Execute and prints no output except the dump filename',
             )
             ->addOption(
                 'dry-run',
-                null,
-                InputOption::VALUE_NONE,
-                'do everything but the dump',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'do everything but the dump',
             )
             ->addOption(
                 'no-single-transaction',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not use single-transaction (not recommended, this is blocking)',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Do not use single-transaction (not recommended, this is blocking)',
             )
             ->addOption(
                 'human-readable',
-                null,
-                InputOption::VALUE_NONE,
-                'Use a single insert with column names per row. Useful to track database differences. Use db:import ' .
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Use a single insert with column names per row. Useful to track database differences. Use db:import ' .
                 '--optimize for speeding up the import.',
             )
             ->addOption(
                 'add-routines',
-                null,
-                InputOption::VALUE_NONE,
-                'Include stored routines in dump (procedures & functions)',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Include stored routines in dump (procedures & functions)',
             )
             ->addOption(
                 'no-tablespaces',
-                null,
-                InputOption::VALUE_NONE,
-                'Use this option if you want to create a dump without having the PROCESS privilege',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Use this option if you want to create a dump without having the PROCESS privilege',
             )
-            ->addOption('stdout', null, InputOption::VALUE_NONE, 'Dump to stdout')
+            ->addOption('stdout', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Dump to stdout')
             ->addOption(
                 'strip',
                 's',
@@ -515,7 +515,7 @@ HELP;
 
         $timeStamp = Carbon::now()->format('Y-m-d_His');
 
-        if (in_array($optionAddTime, ['suffix', true], true)) {
+        if (in_array($optionAddTime, ['suffix', true], strict: true)) {
             $nameSuffix = '_' . $timeStamp;
         } elseif ($optionAddTime === 'prefix') {
             $namePrefix = $timeStamp . '_';
@@ -523,7 +523,7 @@ HELP;
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid --add-time value %s, possible values are none (for) "suffix", "prefix" or "no"',
-                    var_export($optionAddTime, true),
+                    var_export($optionAddTime, return: true),
                 ),
             );
         }

@@ -5,24 +5,19 @@ declare(strict_types=1);
 namespace N98\Magento\Command\Developer;
 
 use N98\Magento\Command\AbstractMagentoStoreConfigCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * Toggle symlinks command
  *
  * @package N98\Magento\Command\Developer
  */
+#[AsCommand(
+    name: 'dev:symlinks',
+    description: 'Toggle allow symlinks setting',
+)]
 class SymlinksCommand extends AbstractMagentoStoreConfigCommand
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'dev:symlinks';
-
-    /**
-     * @var string
-     */
-    protected static $defaultDescription = 'Toggle allow symlinks setting';
-
     protected string $toggleComment = 'Symlinks';
 
     protected string $configPath = 'dev/template/allow_symlink';

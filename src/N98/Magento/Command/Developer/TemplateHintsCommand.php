@@ -6,24 +6,19 @@ namespace N98\Magento\Command\Developer;
 
 use Mage_Core_Model_Store;
 use N98\Magento\Command\AbstractMagentoStoreConfigCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * Toggle template hints command
  *
  * @package N98\Magento\Command\Developer
  */
+#[AsCommand(
+    name: 'dev:template-hints',
+    description: 'Toggles template hints',
+)]
 class TemplateHintsCommand extends AbstractMagentoStoreConfigCommand
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'dev:template-hints';
-
-    /**
-     * @var string
-     */
-    protected static $defaultDescription = 'Toggles template hints';
-
     protected string $toggleComment = 'Template Hints';
 
     protected string $configPath = 'dev/debug/template_hints';

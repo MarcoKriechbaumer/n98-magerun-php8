@@ -199,7 +199,7 @@ class ConfigurationLoader
             ->files()
             ->depth($depth)
             ->followLinks()
-            ->ignoreUnreadableDirs(true)
+            ->ignoreUnreadableDirs(ignore: true)
             ->name($basename)
             ->in($in);
 

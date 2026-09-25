@@ -225,12 +225,12 @@ class ParameterHelper extends AbstractHelper
         InputInterface  $input,
         OutputInterface $output,
         string          $name,
-        string          $value,
+        ?string         $value,
         Collection      $collection
     ): string {
         $this->initValidator();
 
-        if (strlen($value) !== 0) {
+        if ($value !== null && $value !== '') {
             $errors = $this->validateValue($name, $value, $collection);
             if ($errors->count() > 0) {
                 $output->writeln('<error>' . $errors[0]->getMessage() . '</error>');

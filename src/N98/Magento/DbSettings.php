@@ -65,17 +65,17 @@ class DbSettings implements ArrayAccess, IteratorAggregate
     {
         if (!is_readable($file)) {
             throw new InvalidArgumentException(
-                sprintf('"app/etc/local.xml"-file %s is not readable', var_export($file, true)),
+                sprintf('"app/etc/local.xml"-file %s is not readable', var_export($file, return: true)),
             );
         }
 
-        $saved  = libxml_use_internal_errors(true);
+        $saved  = libxml_use_internal_errors(use_errors: true);
         $config = simplexml_load_file($file);
         libxml_use_internal_errors($saved);
 
         if (false === $config) {
             throw new InvalidArgumentException(
-                sprintf('Unable to open "app/etc/local.xml"-file %s and parse it as XML', var_export($file, true)),
+                sprintf('Unable to open "app/etc/local.xml"-file %s and parse it as XML', var_export($file, return: true)),
             );
         }
 
@@ -177,9 +177,11 @@ class DbSettings implements ArrayAccess, IteratorAggregate
     /**
      * Connects to the database without initializing magento
      *
+     * @param bool $useDatabase select the configured database, false to connect to the server only
+     *
      * @throws RuntimeException if pdo_mysql extension is not installed
      */
-    public function getConnection(): PDO
+    public function getConnection(bool $useDatabase = true): PDO
     {
         if (!extension_loaded('pdo_mysql')) {
             throw new RuntimeException('pdo_mysql extension is not installed');
@@ -196,17 +198,19 @@ class DbSettings implements ArrayAccess, IteratorAggregate
         /** @link http://bugs.mysql.com/bug.php?id=18551 */
         $pdo->query("SET SQL_MODE=''");
 
-        try {
-            $pdo->query('USE ' . $this->quoteIdentifier($database));
-        } catch (PDOException $pdoException) {
-            $message = sprintf("Unable to use database '%s': %s %s", $database, get_class($pdoException), $pdoException->getMessage());
-            throw new RuntimeException($message, 0, $pdoException);
+        if ($useDatabase) {
+            try {
+                $pdo->query('USE ' . $this->quoteIdentifier($database));
+            } catch (PDOException $pdoException) {
+                $message = sprintf("Unable to use database '%s': %s %s", $database, get_class($pdoException), $pdoException->getMessage());
+                throw new RuntimeException($message, 0, $pdoException);
+            }
         }
 
         $pdo->query('SET NAMES utf8');
 
-        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-        $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, value: true);
+        $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, value: true);
 
         return $pdo;
     }
@@ -246,11 +250,11 @@ class DbSettings implements ArrayAccess, IteratorAggregate
 
         $pattern = '~^(?:[\x1-\x7F]|[\xC2-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2})+$~';
 
-        if (in_array(preg_match($pattern, $identifier), [0, false], true)) {
+        if (in_array(preg_match($pattern, $identifier), [0, false], strict: true)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid identifier, must not contain NUL and must be UTF-8 encoded in the BMP: %s (hex: %s)',
-                    var_export($identifier, true),
+                    var_export($identifier, return: true),
                     bin2hex($identifier),
                 ),
             );
@@ -343,7 +347,7 @@ class DbSettings implements ArrayAccess, IteratorAggregate
     /**
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (isset($this->config[$offset])) {
             return $this->config[$offset];

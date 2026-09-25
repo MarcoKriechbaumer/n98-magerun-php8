@@ -27,13 +27,13 @@ class CompareVersionsCommand extends AbstractMagentoCommand
     {
         $this
             ->setName('sys:setup:compare-versions')
-            ->addOption('ignore-data', null, InputOption::VALUE_NONE, 'Ignore data updates')
-            ->addOption('log-junit', null, InputOption::VALUE_REQUIRED, 'Log output to a JUnit xml file.')
+            ->addOption('ignore-data', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Ignore data updates')
+            ->addOption('log-junit', shortcut: null, mode: InputOption::VALUE_REQUIRED, description: 'Log output to a JUnit xml file.')
             ->addOption(
                 'errors-only',
-                null,
-                InputOption::VALUE_NONE,
-                'Only display Setup resources where Status equals Error.',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Only display Setup resources where Status equals Error.',
             )
             ->addFormatOption()
             ->setDescription('Compare module version with core_resource table.');
@@ -58,7 +58,7 @@ HELP;
             return Command::INVALID;
         }
 
-        $time = microtime(true);
+        $time = microtime(as_float: true);
         $modules = $config->getNode('modules');
         /** @var Mage_Core_Model_Resource_Resource $mageCoreModelAbstract */
         $mageCoreModelAbstract = Mage::getModel('core/resource_resource');
@@ -69,7 +69,7 @@ HELP;
 
         $headers = ['Setup', 'Module', 'DB', 'Data', 'Status'];
         if ($ignoreDataUpdate) {
-            unset($headers[array_search('Data', $headers, true)]);
+            unset($headers[array_search('Data', $headers, strict: true)]);
         }
 
         $hasStatusErrors = false;
@@ -145,7 +145,7 @@ HELP;
         }
 
         if ($input->getOption('log-junit')) {
-            $this->logJUnit($table, $input->getOption('log-junit'), microtime(true) - $time);
+            $this->logJUnit($table, $input->getOption('log-junit'), microtime(as_float: true) - $time);
         } else {
             $tableHelper = $this->getTableHelper();
             $tableHelper

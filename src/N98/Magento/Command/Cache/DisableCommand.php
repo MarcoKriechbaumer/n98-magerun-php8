@@ -34,7 +34,7 @@ class DisableCommand extends AbstractCacheCommand
         }
 
         $codeArgument = BinaryString::trimExplodeEmpty(',', (string) $input->getArgument('code'));
-        $this->saveCacheStatus($codeArgument, false);
+        $this->saveCacheStatus($codeArgument, status: false);
 
         if ($codeArgument === []) {
             $this->_getCacheModel()->flush();

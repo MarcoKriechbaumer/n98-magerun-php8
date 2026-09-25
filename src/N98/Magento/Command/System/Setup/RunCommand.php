@@ -33,9 +33,9 @@ class RunCommand extends AbstractMagentoCommand
             ->setName('sys:setup:run')
             ->addOption(
                 '--no-implicit-cache-flush',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not flush the cache',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Do not flush the cache',
             )
             ->setDescription('Runs all new setup scripts.');
     }
@@ -92,7 +92,7 @@ HELP;
     {
         $rootFolder = $this->getApplication()->getMagentoRootFolder();
         $trace = array_filter($exception->getTrace(), function (&$row) use ($rootFolder) {
-            if (in_array(strstr($row['file'], $rootFolder), ['', '0'], true) || strstr($row['file'], $rootFolder) === false) {
+            if (in_array(strstr($row['file'], $rootFolder), ['', '0'], strict: true) || strstr($row['file'], $rootFolder) === false) {
                 return false;
             }
 
@@ -139,12 +139,13 @@ HELP;
          */
         $reflectionObject = new ReflectionObject(Mage::app());
         $appEventReflectionProperty = $reflectionObject->getProperty('_events');
-        $appEventReflectionProperty->setAccessible(true);
+        $appEventReflectionProperty->setAccessible(accessible: true);
 
         $eventsBeforeCacheFlush = $appEventReflectionProperty->getValue(Mage::app());
 
         $application = $this->getApplication();
-        $saved = $application->setAutoExit(false);
+        $saved = $application->isAutoExitEnabled();
+        $application->setAutoExit(boolean: false);
         $application->run(new StringInput('cache:flush'), new NullOutput());
         $application->setAutoExit($saved);
 

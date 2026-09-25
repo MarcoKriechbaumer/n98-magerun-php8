@@ -83,7 +83,7 @@ class CatalogProduct extends AbstractEntityType implements EntityType
         $newData['option'] = $this->getOptions($this->attribute);
 
         //get text for script
-        $arrayCode = var_export($newData, true);
+        $arrayCode = var_export($newData, return: true);
 
         //generate script using simple string concatenation, making
         //a single tear fall down the cheek of a CS professor
@@ -95,7 +95,7 @@ class CatalogProduct extends AbstractEntityType implements EntityType
             ";
 
         $attributeLabels = $this->getAttributeLabels($this->attribute);
-        $attributeLabelsCode = var_export($attributeLabels, true);
+        $attributeLabelsCode = var_export($attributeLabels, return: true);
 
         $labelsScript = "
 \$attribute = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', '"

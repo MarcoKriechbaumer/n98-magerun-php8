@@ -105,9 +105,9 @@ HELP;
             return true;
         }
 
-        $message = sprintf("Failed to empty directory %s, unable to remove:\n", var_export($path, true));
+        $message = sprintf("Failed to empty directory %s, unable to remove:\n", var_export($path, return: true));
         foreach ($errors as $error) {
-            $message .= sprintf(" - %s\n", var_export($error, true));
+            $message .= sprintf(" - %s\n", var_export($error, return: true));
         }
 
         throw new RuntimeException($message);

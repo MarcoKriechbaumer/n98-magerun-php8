@@ -32,7 +32,7 @@ class UsageCommand extends AbstractMagentoCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         $this->initMagento();
         $templates = $this->findEmailTemplates();
 

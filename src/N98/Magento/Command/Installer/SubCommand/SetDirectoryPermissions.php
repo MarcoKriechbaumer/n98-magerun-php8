@@ -43,7 +43,7 @@ class SetDirectoryPermissions extends AbstractSubCommand
 
             $finder = Finder::create();
             $finder->directories()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->in([$varFolder, $mediaFolder]);
             foreach ($finder as $dir) {
                 @chmod($dir->getRealpath(), 0777);

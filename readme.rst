@@ -1,52 +1,41 @@
-======================================
-netz98 magerun CLI tools for Magento 1
-======================================
+===================================================
+n98-magerun for PHP 8.2+ and OpenMage LTS 20.10+
+===================================================
 
 .. image:: .github/doc/magerun-logo.png
 
-The n98 magerun cli tools provides some handy tools to work with Magento from command line.
+The n98 magerun cli tools provides some handy tools to work with Magento 1 / OpenMage LTS from command line.
 
-.. image:: https://badges.gitter.im/netz98/magerun.svg
-   :target: https://gitter.im/netz98/magerun
+This is a fork of `netz98/n98-magerun <https://github.com/netz98/n98-magerun>`_, ported to PHP 8.2 - 8.5 and
+current OpenMage LTS releases. All credits for the original tool go to netz98, valantic CEC and the upstream
+contributors.
 
+.. image:: https://github.com/MarcoKriechbaumer/n98-magerun-php8/actions/workflows/workflow.yml/badge.svg
+   :target: https://github.com/MarcoKriechbaumer/n98-magerun-php8/actions/workflows/workflow.yml
 
-Build Status
-------------
+This software is only running with Magento 1 / OpenMage LTS.
 
-+------------------------+-----------------------------------------------------------------------------------------------+
-| **Latest Release**     | .. image:: https://img.shields.io/maintenance/yes/2021.svg                                    |
-|                        | .. image:: https://travis-ci.org/netz98/n98-magerun.png?branch=master                         |
-|                        |    :target: https://travis-ci.org/netz98/n98-magerun                                          |
-|                        | .. image:: https://scrutinizer-ci.com/g/netz98/n98-magerun/badges/quality-score.png?b=master  |
-|                        |    :target: https://scrutinizer-ci.com/g/netz98/n98-magerun/                                  |
-|                        | .. image:: https://poser.pugx.org/n98/magerun/v/stable.png                                    |
-|                        |    :target: https://packagist.org/packages/n98/magerun                                        |
-+------------------------+-----------------------------------------------------------------------------------------------+
-| **Development Branch** | .. image:: https://travis-ci.org/netz98/n98-magerun.png?branch=develop                        |
-|                        |    :target: https://travis-ci.org/netz98/n98-magerun                                          |
-|                        | .. image:: https://circleci.com/gh/netz98/n98-magerun/tree/develop.svg?style=shield           |
-|                        |    :target: https://circleci.com/gh/netz98/n98-magerun/tree/develop                           |
-|                        | .. image:: https://scrutinizer-ci.com/g/netz98/n98-magerun/badges/quality-score.png?b=develop |
-|                        |    :target: https://scrutinizer-ci.com/g/netz98/n98-magerun/?branch=develop                   |
-|                        | .. image:: https://codecov.io/github/netz98/n98-magerun/coverage.svg?branch=develop           |
-|                        |    :target: https://codecov.io/github/netz98/n98-magerun?branch=develop                       |
-+------------------------+-----------------------------------------------------------------------------------------------+
-
-Development is done in **develop** branch.
-
-This software is only running with Magento 1.
-
-If you use Magento 2 please use another stable version (https://github.com/netz98/n98-magerun2).
+If you use Magento 2 please use https://github.com/netz98/n98-magerun2.
 
 Compatibility
 -------------
-The tools will automatically be tested for multiple PHP versions. It's currently running in various Linux distributions and Mac OS X.
-Microsoft Windows is not fully supported (some Commands like `db:dump` or `install` are excluded).
 
-We test the tool agains this versions:
+- PHP 8.2, 8.3, 8.4 and 8.5
+- OpenMage LTS 20.10.0 and newer (the PHP versions supported by the OpenMage release apply, e.g. PHP 8.5 needs
+  OpenMage 20.16 or newer)
 
-- Magento 1.9.4.5 PHP 7.2
-- OpenMage LTS 20.0.3 PHP 7.3
+Every push is tested against:
+
+- OpenMage LTS 20.10.2 with PHP 8.2 and 8.4
+- OpenMage LTS 20.18.0 with PHP 8.2 and 8.5
+
+each with MySQL 5.7 and 8.0.
+
+Older Magento 1 / OpenMage versions and PHP versions before 8.2 are not supported by this fork, use the upstream
+version for them.
+
+Linux and macOS are supported. Microsoft Windows is not fully supported (some Commands like `db:dump` or `install`
+are excluded).
 
 Installation
 ------------
@@ -56,25 +45,26 @@ There are three ways to install the tools:
 Download and Install Phar File
 """"""""""""""""""""""""""""""
 
-Download the latest stable N98-Magerun phar-file from the file-server_:
+Download the latest n98-magerun phar-file from the `GitHub releases`_:
 
 .. code-block:: sh
 
-   wget https://files.magerun.net/n98-magerun.phar
+   wget https://github.com/MarcoKriechbaumer/n98-magerun-php8/releases/latest/download/n98-magerun.phar
 
 or if you prefer to use Curl:
 
 .. code-block:: sh
 
-   curl -O https://files.magerun.net/n98-magerun.phar
+   curl -LO https://github.com/MarcoKriechbaumer/n98-magerun-php8/releases/latest/download/n98-magerun.phar
 
-Verify the download by comparing the SHA256 checksum with the one on the website at https://files.magerun.net/:
+Verify the download with the SHA256 checksum file attached to the same release:
 
 .. code-block:: sh
 
-    shasum -a256 n98-magerun.phar
+   curl -LO https://github.com/MarcoKriechbaumer/n98-magerun-php8/releases/latest/download/n98-magerun.phar.sha256
+   sha256sum -c n98-magerun.phar.sha256
 
-If it shows the same checksum as on the website, you downloaded the file successfully.
+If it prints `n98-magerun.phar: OK`, you downloaded the file successfully.
 
 Now you can make the phar-file executable:
 
@@ -88,11 +78,11 @@ The base-installation is now complete and you can verify it:
 
     ./n98-magerun.phar --version
 
-The command should execute successfully and show you the version number of N98-Magerun like:
+The command should execute successfully and show you the version number of n98-magerun like:
 
 .. code-block:: sh
 
-    n98-magerun version 2.3.0 by valantic CEC
+    n98-magerun 3.0.1 by valantic CEC
 
 You now have successfully installed Magerun! You can tailor the installation further like installing it system-wide and
 enable autocomplete - read on for more information about these and other features.
@@ -103,70 +93,63 @@ If you want to use the command system wide you can copy it to `/usr/local/bin`.
 
     sudo cp ./n98-magerun.phar /usr/local/bin/
 
-**Debian / suhosin:**
-
-On some Debian systems with compiled in suhosin the phar extension must be added to a whitelist.
-
-Add this to your php.ini file:
-
-.. code-block:: ini
-
-   suhosin.executor.include.whitelist="phar"
-
 **You don't like the filename?**
 
 Just rename it to whatever you want. Or better: create an alias so that the original command name still works. This can
 be useful if you exchange scripts that are making use of magerun with other users as the canonical name is
 `n98-magerun.phar`, Some common aliases amongst the user-base are `magerun` or just `mr` even.
 
-
-.. _file-server: https://files.magerun.net/
+.. _GitHub releases: https://github.com/MarcoKriechbaumer/n98-magerun-php8/releases
 
 Install with Composer
 """""""""""""""""""""
-Require Magerun within the Magento (or any other) project and you can then
-execute it from the vendor’s bin folder:
+
+The package is not published on Packagist, `composer require n98/magerun` would install the upstream version.
+Add this repository as a VCS repository to the `composer.json` of your Magento project instead:
+
+.. code-block:: json
+
+    {
+        "repositories": [
+            {
+                "type": "vcs",
+                "url": "https://github.com/MarcoKriechbaumer/n98-magerun-php8"
+            }
+        ]
+    }
+
+Then require it and execute it from the vendor's bin folder:
 
 .. code-block:: sh
 
-    composer require n98/magerun
+    composer require n98/magerun:dev-master
     # ...
     ./vendor/bin/n98-magerun --version
-    n98-magerun version 1.97.0 by netz98 new media GmbH
+    n98-magerun 3.0.1 by valantic CEC
 
-Alternative source install:
-
-https://github.com/netz98/n98-magerun/wiki/Install-from-source-with-Composer
-
-Install with Homebrew
-"""""""""""""""""""""
-
-First you need to have homebrew installed: http://brew.sh/
-
-Install homebrew-php tap: https://github.com/Homebrew/homebrew-php#installation
-
-Once homebrew and the tap are installed, you can install the tools with it:
+Install from source
+"""""""""""""""""""
 
 .. code-block:: sh
 
-    brew install n98-magerun
+    git clone https://github.com/MarcoKriechbaumer/n98-magerun-php8.git
+    cd n98-magerun-php8
+    composer install --no-dev
+    ./bin/n98-magerun --version
 
-You can now use the tools:
-
-.. code-block:: sh
-
-    $ n98-magerun {command}
+To build the phar file yourself run `bash ./build.sh` after a `composer install`.
 
 Update
 ------
 
-Since version 1.1.0 we deliver a self-update script within the phar file::
+The phar file contains a self-update command, which downloads the latest release from the
+`GitHub releases`_ of this fork::
 
    $ n98-magerun.phar self-update
 
-If file was installed system wide do not forget "sudo".
+Use `--dry-run` to only check for a newer version. If the file was installed system wide do not forget "sudo".
 
-See it in action: http://youtu.be/wMHpfKD9vjM
+If you installed with Composer, update with `composer update n98/magerun`.
 
 Autocompletion
 --------------
@@ -437,7 +420,7 @@ Available Table Groups:
 * @sales Sales data (orders, invoices, creditmemos etc)
 * @customers Customer data
 * @trade Current trade data (customers and orders). You usally do not want those in developer systems.
-* @search Search related tables (catalogsearch_)
+* @search Search related tables (``catalogsearch_``)
 * @development Removes logs, sessions, trade data and admin users so developers do not have to work with real customer data or admin user accounts
 * @idx Tables with _idx suffix and index event tables
 
@@ -568,37 +551,9 @@ If strip option is set, the following folders are excluded:
 * css (combined css files)
 * catalog/product/cache
 
-Create Gift Card Pool
-"""""""""""""""""""""
 
-Creates a new giftcard pool
 
-.. code-block:: sh
 
-   $ n98-magerun.phar giftcard:pool:generate
-
-Create a Gift Card
-""""""""""""""""""
-
-.. code-block:: sh
-
-   $ n98-magerun.phar giftcard:create [--website[="..."]] amount
-
-You may specify a website ID or use the default
-
-View Gift Card Information
-""""""""""""""""""""""""""
-
-.. code-block:: sh
-
-   $ n98-magerun.phar giftcard:info [--format[="..."]] code
-
-Remove a Gift Card
-""""""""""""""""""
-
-.. code-block:: sh
-
-   $ n98-magerun.phar giftcard:remove code
 
 List Indexes
 """"""""""""
@@ -637,23 +592,6 @@ Loops all Magento indexes and triggers reindex.
 
    $ n98-magerun.phar index:reindex:all
 
-List Enterprise Mview Changelog Indexes
-"""""""""""""""""""""""""""""""""""""""
-
-Lists the Mview indexers available, as well as their current version and how many are in the changelog queue .
-
-.. code-block:: sh
-
-   $ n98-magerun.phar index:list:mview [--format[="..."]]
-
-Reindex an Enterprise Mview Changelog Index
-"""""""""""""""""""""""""""""""""""""""""""
-
-Index by Mview table code. This will ignore all locks and trigger the changelog indexer.
-
-.. code-block:: sh
-
-   $ n98-magerun.phar index:reindex:mview [table_code]
 
 
 Generate local.xml file
@@ -932,34 +870,7 @@ Toggles the active status of an backend user. ID can be e-mail or username. The 
 user by username first and if it cannot be found it will attempt to find the user by e-mail. If ID is omitted you
 will be prompted for it.
 
-Lock admin user
-"""""""""""""""""
-.. code-block:: sh
 
-   $ n98-magerun.phar admin:user:lock [username] [lifetime]
-
-Locks an admin user for the number of days specified in `[lifetime]`. If not provided, the lifetime will default to
-31 days.
-
-Lock all admin users
-"""""""""""""""""
-.. code-block:: sh
-
-   $ n98-magerun.phar admin:user:lockdown [lifetime] [--dry-run]
-
-Locks all admin users in the system for the number of days specified in `[lifetime]`. As above, if not provided it will
-default to 31 days.
-
-Use with caution! Use the `--dry-run` option to test first.
-
-Unlock admin user
-"""""""""""""""""
-
-.. code-block:: sh
-
-   $ n98-magerun.phar admin:user:unlock [username]
-
-Releases the password lock on an admin (leave blank to unlock all admins).
 
 Disable admin notifications
 """""""""""""""""""""""""""
@@ -1145,25 +1056,7 @@ System Check
 
    $ n98-magerun.phar sys:check
 
-CMS: Toggle Banner
-""""""""""""""""""
 
-Hide/Show CMS Banners
-
-.. code-block:: sh
-
-   $ n98-magerun.phar cms:banner:toggle <banner_id>
-
-CMS: Publish a page
-"""""""""""""""""""
-
-Publishes a page by page id and revision.
-
-.. code-block:: sh
-
-   $ n98-magerun.phar cms:page:publish <page_id> <revision_id>
-
-Useful to automatically publish a page by a cron job.
 
 Interactive Development Console
 """""""""""""""""""""""""""""""
@@ -1175,8 +1068,6 @@ Opens PHP interactive shell with initialized Magento Admin-Store.
    $ n98-magerun.phar dev:console
 
 See it in action: http://www.youtube.com/watch?v=zAWpRpawTGc
-
-The command is only available for PHP 5.4 users.
 
 CSS Merging
 """"""""""""""
@@ -1375,7 +1266,7 @@ Global scope can be set by not permitting store_code parameter:
    $ n98-magerun.phar dev:symlinks
 
 Create Module Skeleton
-""""""""""""""""""
+""""""""""""""""""""""
 
 Creates an empty module and registers it in current Magento shop:
 
@@ -1394,7 +1285,7 @@ Example:
 
 
 * `--modman` option creates a new folder based on `vendorNamespace` and `moduleName` argument.
-Run this command inside your `.modman` folder.
+  Run this command inside your `.modman` folder.
 
 * --add-all option add blocks, helpers and models.
 
@@ -1565,56 +1456,9 @@ Create dummy attribute values (ONLY FOR DROPDOWN ATTRIBUTE)
 | `values-number`              | Number of Values to create (default 1)       | only integer                                                 |
 +------------------------------+----------------------------------------------+--------------------------------------------------------------+
 
-List Extensions
-"""""""""""""""
 
-List and find connect extensions by a optional search string:
 
-.. code-block:: sh
 
-   $ n98-magerun.phar extension:list [--format[="..."]] <search>
-
-* Requires Magento's `mage` shell script.
-* Does not work with Windows as operating system.
-
-Install Extensions
-""""""""""""""""""
-
-Installs a connect extension by package key:
-
-.. code-block:: sh
-
-   $ n98-magerun.phar extension:install <package_key>
-
-If the package could not be found a search for alternatives will be done.
-If alternatives could be found you can select the package to install.
-
-* Requires Magento's `mage` shell script.
-* Does not work with Windows as operating system.
-
-Download Extensions
-"""""""""""""""""""
-
-Downloads connect extensions by package key:
-
-.. code-block:: sh
-
-   $ n98-magerun.phar extension:download <search>
-
-* Requires Magento's `mage` shell script.
-* Does not work with Windows as operating system.
-
-Upgrade Extensions
-""""""""""""""""""
-
-Upgrade connect extensions by package key:
-
-.. code-block:: sh
-
-   $ n98-magerun.phar extension:upgrade <search>
-
-* Requires Magento's `mage` shell script.
-* Does not work with Windows as operating system.
 
 Magento Installer
 """""""""""""""""
@@ -1639,11 +1483,11 @@ Unattended installation:
 
    $ n98-magerun.phar install [--magentoVersion[="..."]] [--magentoVersionByName[="..."]] [--installationFolder[="..."]] [--dbHost[="..."]] [--dbUser[="..."]] [--dbPass[="..."]] [--dbName[="..."]] [--installSampleData[="..."]] [--useDefaultConfigParams[="..."]] [--baseUrl[="..."]] [--replaceHtaccessFile[="..."]]
 
-Example of an unattended Magento CE 1.7.0.2 installation:
+Example of an unattended OpenMage 20.18.0 installation:
 
 .. code-block:: sh
 
-   $ n98-magerun.phar install --dbHost="localhost" --dbUser="mydbuser" --dbPass="mysecret" --dbName="magentodb" --installSampleData=yes --useDefaultConfigParams=yes --magentoVersionByName="magento-ce-1.7.0.2" --installationFolder="magento" --baseUrl="http://magento.localdomain/"
+   $ n98-magerun.phar install --dbHost="localhost" --dbUser="mydbuser" --dbPass="mysecret" --dbName="magentodb" --installSampleData=yes --useDefaultConfigParams=yes --magentoVersionByName="openmage-20.18.0" --installationFolder="magento" --baseUrl="http://magento.localdomain/"
 
 Additionally, with --noDownload option you can install Magento working copy already stored in --installationFolder on
 the given database.
@@ -1674,14 +1518,6 @@ you can just pass "." Eg:
 
 If you omit the -f, you will be prompted for confirmation.
 
-n98-magerun Shell
-"""""""""""""""""
-
-If you need autocompletion for all n98-magerun commands you can start with "shell command".
-
-.. code-block:: sh
-
-   $ n98-magerun.phar shell
 
 n98-magerun Script
 """"""""""""""""""
@@ -1744,9 +1580,9 @@ Create file `test.magerun` and make it executable (`chmod +x test.magerun`):
 Pre-defined variables:
 
 * ${magento.root}    -> Magento Root-Folder
-* ${magento.version} -> Magento Version i.e. 1.7.0.2
+* ${magento.version} -> Magento Version i.e. 1.9.4.5
 * ${magento.edition} -> Magento Edition -> Community or Enterprise
-* ${magerun.version} -> Magerun version i.e. 1.66.0
+* ${magerun.version} -> Magerun version i.e. 3.0.1
 * ${php.version}     -> PHP Version
 * ${script.file}     -> Current script file path
 * ${script.dir}      -> Current script file dir
@@ -1823,36 +1659,28 @@ Add own Magento repositories
 Create the yaml config file **~/.n98-magerun.yaml**.
 Now you can define overwrites. The original config file is **config.yaml** in the source root folder.
 
-Add your repo. The keys in the config file follow the composer package structure.
+Add your package. Magento is installed with `composer create-project`, `package` and `version` are passed to it,
+`options` are added as additional composer options (e.g. a custom repository).
 
 Example::
 
     commands:
       N98\Magento\Command\Installer\InstallCommand:
         magento-packages:
-          - name: my-magento-git-repository
-            version: 1.x.x.x
-            source:
-              url: git://myserver/myrepo.git
-              type: git
-              reference: 1.x.x.x
+          - name: my-openmage-fork
+            package: my-vendor/magento-lts
+            version: 20.18.0
+            options:
+              - --repository=https://repo.example.com
             extra:
-              sample-data: sample-data-1.6.1.0
-
-          - name: my-zipped-magento
-            version: 1.7.0.0
-            dist:
-              url: http://www.myserver.example.com/magento-1.7.0.0.tar.gz
-              type: tar
-            extra:
-              sample-data: sample-data-1.6.1.0
+              sample-data: sample-data-1.9.2.4
 
 How can you help?
 -----------------
 
 * Add new commands.
 * Send me some proposals if you miss anything.
-* Create issues if you find a bug or missing a feature.
+* Create issues at https://github.com/MarcoKriechbaumer/n98-magerun-php8/issues if you find a bug or missing a feature.
 
 Thanks to
 ---------

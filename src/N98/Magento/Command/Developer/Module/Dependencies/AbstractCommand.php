@@ -59,7 +59,7 @@ abstract class AbstractCommand extends AbstractMagentoCommand
             $this->writeSection($output, sprintf(static::COMMAND_SECTION_TITLE_TEXT, $moduleName));
         }
 
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         $this->initMagento();
 
         try {

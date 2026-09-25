@@ -24,8 +24,8 @@ class ChangeStatusCommand extends AbstractAdminUserCommand
         $this
             ->setName('admin:user:change-status')
             ->addArgument('id', InputArgument::OPTIONAL, 'Username or Email')
-            ->addOption('activate', null, InputOption::VALUE_NONE, 'Activate user')
-            ->addOption('deactivate', null, InputOption::VALUE_NONE, 'Deactivate user')
+            ->addOption('activate', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Activate user')
+            ->addOption('deactivate', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Deactivate user')
             ->setDescription('Set active status of an adminhtml user. If no option is set the status will be toggled.')
         ;
     }

@@ -59,7 +59,7 @@ class IncrementalCommand extends AbstractMagentoCommand
         $this
             ->setName('sys:setup:incremental')
             ->setDescription('List new setup scripts to run, then runs one script')
-            ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stops execution of script on error');
+            ->addOption('stop-on-error', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Stops execution of script on error');
     }
 
     public function getHelp(): string
@@ -186,7 +186,7 @@ HELP;
     {
         $reflectionClass = new ReflectionClass($object);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $reflectionMethod->setAccessible(true);
+        $reflectionMethod->setAccessible(accessible: true);
 
         return $reflectionMethod->invokeArgs($object, $args);
     }
@@ -199,7 +199,7 @@ HELP;
     {
         $reflectionClass = new ReflectionClass($object);
         $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setAccessible(accessible: true);
         $reflectionProperty->setValue($object, $value);
     }
 
@@ -211,7 +211,7 @@ HELP;
     {
         $reflectionClass = new ReflectionClass($object);
         $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setAccessible(accessible: true);
 
         return $reflectionProperty->getValue($object);
     }
@@ -360,7 +360,7 @@ HELP;
     protected function _runNamedSetupResource(string $name, array $needsUpdate, string $type): void
     {
         $output = $this->_output;
-        if (!in_array($type, [self::TYPE_MIGRATION_STRUCTURE, self::TYPE_MIGRATION_DATA])) {
+        if (!in_array($type, [self::TYPE_MIGRATION_STRUCTURE, self::TYPE_MIGRATION_DATA], strict: true)) {
             throw new RuntimeException('Invalid Type [' . $type . ']: structure, data is valid');
         }
 
@@ -476,9 +476,9 @@ HELP;
         $question = new Question('<question>Press Enter to Run this update:</question> ');
         $questionHelper->ask($input, $output, $question);
 
-        $start = microtime(true);
+        $start = microtime(as_float: true);
         $this->_runNamedSetupResource($toUpdate, $needsUpdate, $type);
-        $time_ran = microtime(true) - $start;
+        $time_ran = microtime(as_float: true) - $start;
         $output->writeln('');
         $output->writeln(ucwords($type) . ' update <info>' . $toUpdate . '</info> complete.');
         $output->writeln('Ran in ' . floor($time_ran * 1000) . 'ms');

@@ -100,7 +100,7 @@ HELP;
         }
 
         $validator = function ($typeInput) use ($indexerList) {
-            $typeInputs = strstr($typeInput, ',') ? BinaryString::trimExplodeEmpty(',', $typeInput) : [$typeInput];
+            $typeInputs = strstr((string) $typeInput, ',') ? BinaryString::trimExplodeEmpty(',', $typeInput) : [$typeInput];
 
             $returnCodes = [];
             foreach ($typeInputs as $typeInput) {

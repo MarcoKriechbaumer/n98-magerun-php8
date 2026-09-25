@@ -28,57 +28,57 @@ class InstallCommand extends AbstractMagentoCommand
     {
         $this
             ->setName('install')
-            ->addOption('magentoVersion', null, InputOption::VALUE_OPTIONAL, 'Magento version')
+            ->addOption('magentoVersion', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Magento version')
             ->addOption(
                 'magentoVersionByName',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Magento version name instead of order number',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Magento version name instead of order number',
             )
-            ->addOption('installationFolder', null, InputOption::VALUE_OPTIONAL, 'Installation folder')
-            ->addOption('dbHost', null, InputOption::VALUE_OPTIONAL, 'Database host')
-            ->addOption('dbUser', null, InputOption::VALUE_OPTIONAL, 'Database user')
-            ->addOption('dbPass', null, InputOption::VALUE_OPTIONAL, 'Database password')
-            ->addOption('dbName', null, InputOption::VALUE_OPTIONAL, 'Database name')
-            ->addOption('dbPort', null, InputOption::VALUE_OPTIONAL, 'Database port', 3306)
-            ->addOption('installSampleData', null, InputOption::VALUE_OPTIONAL, 'Install sample data')
+            ->addOption('installationFolder', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Installation folder')
+            ->addOption('dbHost', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Database host')
+            ->addOption('dbUser', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Database user')
+            ->addOption('dbPass', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Database password')
+            ->addOption('dbName', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Database name')
+            ->addOption('dbPort', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Database port', default: 3306)
+            ->addOption('installSampleData', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Install sample data')
             ->addOption(
                 'useDefaultConfigParams',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Use default installation parameters defined in the yaml file',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Use default installation parameters defined in the yaml file',
             )
-            ->addOption('baseUrl', null, InputOption::VALUE_OPTIONAL, 'Installation base url')
+            ->addOption('baseUrl', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Installation base url')
             ->addOption(
                 'replaceHtaccessFile',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Generate htaccess file (for non vhost environment)',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Generate htaccess file (for non vhost environment)',
             )
             ->addOption(
                 'noDownload',
-                null,
-                InputOption::VALUE_NONE,
-                'If set skips download step. Used when installationFolder is already a Magento installation that has ' .
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'If set skips download step. Used when installationFolder is already a Magento installation that has ' .
                 'to be installed on the given database.',
             )
             ->addOption(
                 'only-download',
-                null,
-                InputOption::VALUE_NONE,
-                'Downloads (and extracts) source code',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Downloads (and extracts) source code',
             )
             ->addOption(
                 'forceUseDb',
-                null,
-                InputOption::VALUE_NONE,
-                'If --forceUseDb passed, force to use given database if it already exists.',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'If --forceUseDb passed, force to use given database if it already exists.',
             )
             ->addOption(
                 'composer-use-same-php-binary',
-                null,
-                InputOption::VALUE_NONE,
-                'If --composer-use-same-php-binary passed, will invoke composer with the same PHP binary',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'If --composer-use-same-php-binary passed, will invoke composer with the same PHP binary',
             )
             ->setDescription('Install magento');
     }

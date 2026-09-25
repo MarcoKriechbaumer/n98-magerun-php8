@@ -21,6 +21,9 @@ use BadMethodCallException;
  */
 final class AutoloadHandlerTest extends TestCase
 {
+    /**
+     * @var \Closure[]
+     */
     private array $cleanup = [];
 
     protected function tearDown(): void
@@ -35,7 +38,7 @@ final class AutoloadHandlerTest extends TestCase
 
     public function testCreation()
     {
-        $handler = $this->create(null);
+        $handler = $this->create(implementation: null);
         $this->assertInstanceOf(__NAMESPACE__ . '\AutoloadHandler', $handler);
         $this->assertIsCallable($handler);
     }
@@ -45,7 +48,7 @@ final class AutoloadHandlerTest extends TestCase
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Autoload callback is not callable');
 
-        $handler = $this->create(null, AutoloadHandler::NO_AUTO_REGISTER);
+        $handler = $this->create(implementation: null, flags: AutoloadHandler::NO_AUTO_REGISTER);
         $handler->disable(); // assertions require a disabled handler b/c of exceptions
 
         $this->assertNotContains($handler, spl_autoload_functions());
@@ -96,7 +99,7 @@ final class AutoloadHandlerTest extends TestCase
             return $calls->retval;
         };
 
-        $handler = $this->create(null, AutoloadHandler::NO_EXCEPTION);
+        $handler = $this->create(implementation: null, flags: AutoloadHandler::NO_EXCEPTION);
         $this->assertFalse($handler->__invoke('Test'));
         $this->assertObjectNotHasProperty('count', $calls);
 
@@ -111,7 +114,7 @@ final class AutoloadHandlerTest extends TestCase
 
     public function testDisablingAndEnabling(): never
     {
-        $handler = $this->create(null);
+        $handler = $this->create(implementation: null);
         $handler->setEnabled(false);
         $this->assertFalse($handler->__invoke('Test'));
         $handler->setEnabled(true);

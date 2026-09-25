@@ -60,13 +60,13 @@ class Initializer
      */
     public function requireMage(): void
     {
-        if (class_exists(self::CLASS_MAGE, false)) {
+        if (class_exists(self::CLASS_MAGE, autoload: false)) {
             return;
         }
 
         $this->requireOnce();
 
-        if (!class_exists(self::CLASS_MAGE, false)) {
+        if (!class_exists(self::CLASS_MAGE, autoload: false)) {
             throw new RuntimeException(sprintf('Failed to load definition of "%s" class', self::CLASS_MAGE));
         }
     }
@@ -79,14 +79,24 @@ class Initializer
         // Create a new AutoloadRestorer to capture current auto-loaders
         $autoloadRestorer = new AutoloadRestorer();
 
+        $pharWrapperRegistered = in_array('phar', stream_get_wrappers(), strict: true);
+
         $path = $this->magentoPath . '/' . self::PATH_APP_BOOTSTRAP_PHP;
         initialiser_require_once($path);
+
+        // OpenMage bootstrap unregisters the phar stream wrapper, n98-magerun.phar needs it to load its own classes
+        if ($pharWrapperRegistered && !in_array('phar', stream_get_wrappers(), strict: true)) {
+            stream_wrapper_restore('phar');
+        }
 
         $path = $this->magentoPath . '/' . self::PATH_APP_MAGE_PHP;
         initialiser_require_once($path);
 
         // Restore auto-loaders that might be removed by extensions that overwrite Varien/Autoload
         $autoloadRestorer->restore();
+
+        // Magento's composer autoloader is registered in front, give n98-magerun's auto-loaders priority again
+        $autoloadRestorer->prepend();
     }
 }
 

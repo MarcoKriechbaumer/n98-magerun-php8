@@ -37,7 +37,7 @@ class ChooseInstallationFolder extends AbstractSubCommand
             }
 
             if (!is_dir($folderName)) {
-                if (!mkdir($folderName, 0777, true) && !is_dir($folderName)) {
+                if (!mkdir($folderName, 0777, recursive: true) && !is_dir($folderName)) {
                     throw new InvalidArgumentException('Cannot create folder.');
                 }
 

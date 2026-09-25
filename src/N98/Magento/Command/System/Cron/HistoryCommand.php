@@ -30,9 +30,9 @@ class HistoryCommand extends AbstractMagentoCommand
             ->setDescription('Last executed cronjobs with status.')
             ->addOption(
                 'timezone',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Timezone to show finished at in',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Timezone to show finished at in',
             )
             ->addFormatOption()
         ;

@@ -59,12 +59,12 @@ class MetaCommand extends AbstractMagentoCommand
             ->setName('dev:ide:phpstorm:meta')
             ->addOption(
                 'meta-version',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'PhpStorm Meta version (' . self::VERSION_OLD . ', ' . self::VERSION_2017 . ', ' . self::VERSION_2019 . ')',
-                self::VERSION_2019,
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'PhpStorm Meta version (' . self::VERSION_OLD . ', ' . self::VERSION_2017 . ', ' . self::VERSION_2019 . ')',
+                default: self::VERSION_2019,
             )
-            ->addOption('stdout', null, InputOption::VALUE_NONE, 'Print to stdout instead of file .phpstorm.meta.php')
+            ->addOption('stdout', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Print to stdout instead of file .phpstorm.meta.php')
             ->setDescription('Generates meta data file for PhpStorm auto completion (default version : ' . self::VERSION_2019 . ')');
     }
 
@@ -108,7 +108,7 @@ class MetaCommand extends AbstractMagentoCommand
         $path = $file->getRelativePathname();
         if (substr($path, -4) !== '.php') {
             throw new UnexpectedValueException(
-                sprintf('Expected that relative file %s ends with ".php"', var_export($path, true)),
+                sprintf('Expected that relative file %s ends with ".php"', var_export($path, return: true)),
             );
         }
 
@@ -228,7 +228,7 @@ class MetaCommand extends AbstractMagentoCommand
                 ->files()
                 ->in($searchFolders)
                 ->followLinks()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->name('*.php')
                 ->notName('install-*')
                 ->notName('upgrade-*')

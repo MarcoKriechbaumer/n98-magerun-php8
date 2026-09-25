@@ -26,19 +26,19 @@ class GetCommand extends AbstractConfigCommand
             ->addArgument('path', InputArgument::OPTIONAL, 'The config path')
             ->addOption(
                 'scope',
-                null,
-                InputOption::VALUE_REQUIRED,
-                "The config value's scope (default, websites, stores)",
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: "The config value's scope (default, websites, stores)",
             )
-            ->addOption('scope-id', null, InputOption::VALUE_REQUIRED, "The config value's scope ID")
+            ->addOption('scope-id', shortcut: null, mode: InputOption::VALUE_REQUIRED, description: "The config value's scope ID")
             ->addOption(
                 'decrypt',
-                null,
-                InputOption::VALUE_NONE,
-                "Decrypt the config value using local.xml's crypt key",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "Decrypt the config value using local.xml's crypt key",
             )
-            ->addOption('update-script', null, InputOption::VALUE_NONE, 'Output as update script lines')
-            ->addOption('magerun-script', null, InputOption::VALUE_NONE, 'Output for usage with config:set')
+            ->addOption('update-script', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Output as update script lines')
+            ->addOption('magerun-script', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Output for usage with config:set')
             ->addFormatOption();
     }
 
@@ -58,16 +58,16 @@ HELP;
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $table = [];
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }
 
         $collection = $this->_getConfigDataModel()->getCollection();
 
-        $searchPath = $input->getArgument('path');
+        $searchPath = (string) $input->getArgument('path');
 
-        if (substr($input->getArgument('path'), -1, 1) === '/') {
+        if (substr($searchPath, -1, 1) === '/') {
             $searchPath .= '*';
         }
 
@@ -163,7 +163,7 @@ HELP;
                     break;
                 default:
                     throw new UnexpectedValueException(
-                        sprintf('Unhandled format %s', var_export($value, true)),
+                        sprintf('Unhandled format %s', var_export($value, return: true)),
                     );
             }
         }
@@ -185,18 +185,18 @@ HELP;
                 $output->writeln(
                     sprintf(
                         '$installer->setConfigData(%s, %s);',
-                        var_export($row['path'], true),
-                        var_export($row['value'], true),
+                        var_export($row['path'], return: true),
+                        var_export($row['value'], return: true),
                     ),
                 );
             } else {
                 $output->writeln(
                     sprintf(
                         '$installer->setConfigData(%s, %s, %s, %s);',
-                        var_export($row['path'], true),
-                        var_export($row['value'], true),
-                        var_export($row['scope'], true),
-                        var_export($row['scope_id'], true),
+                        var_export($row['path'], return: true),
+                        var_export($row['value'], return: true),
+                        var_export($row['scope'], return: true),
+                        var_export($row['scope_id'], return: true),
                     ),
                 );
             }

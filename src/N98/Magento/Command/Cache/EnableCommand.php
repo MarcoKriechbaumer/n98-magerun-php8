@@ -34,7 +34,7 @@ class EnableCommand extends AbstractCacheCommand
         }
 
         $codeArgument = BinaryString::trimExplodeEmpty(',', (string) $input->getArgument('code'));
-        $this->saveCacheStatus($codeArgument, true);
+        $this->saveCacheStatus($codeArgument, status: true);
 
         if ($codeArgument !== []) {
             foreach ($codeArgument as $code) {

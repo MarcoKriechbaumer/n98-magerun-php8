@@ -56,7 +56,7 @@ class DeleteUserCommand extends AbstractAdminUserCommand
             $shouldRemove = $questionHelper->ask(
                 $input,
                 $output,
-                new ConfirmationQuestion('<question>Are you sure?</question> <comment>[n]</comment>: ', false),
+                new ConfirmationQuestion('<question>Are you sure?</question> <comment>[n]</comment>: ', default: false),
             );
         }
 

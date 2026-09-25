@@ -46,7 +46,7 @@ final class ApplicationTest extends TestCase
 
         $configArray = ['autoloaders' => ['N98MagerunTest' => __DIR__ . '/_ApplicationTestSrc'], 'commands' => ['customCommands' => [0 => \N98MagerunTest\TestDummyCommand::class], 'aliases' => [['cl' => 'cache:list']]], 'init' => ['options' => ['config_model' => \N98MagerunTest\AlternativeConfigModel::class]]];
 
-        $application->setAutoExit(false);
+        $application->setAutoExit(boolean: false);
         $application->init(ArrayFunctions::mergeArrays($distConfigArray, $configArray));
         $application->run(new StringInput('list'), new NullOutput());
 

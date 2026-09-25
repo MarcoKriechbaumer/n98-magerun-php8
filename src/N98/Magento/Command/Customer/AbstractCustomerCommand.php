@@ -43,14 +43,14 @@ abstract class AbstractCustomerCommand extends AbstractMagentoCommand
     protected function getRegionCollection(): Mage_Directory_Model_Resource_Region_Collection
     {
         /** @var Mage_Directory_Model_Resource_Region_Collection $mageCoreModelAbstract */
-        $mageCoreModelAbstract = Mage::getModel('directory/region_collection');
+        $mageCoreModelAbstract = Mage::getResourceModel('directory/region_collection');
         return $mageCoreModelAbstract;
     }
 
     protected function getCountryCollection(): Mage_Directory_Model_Resource_Country_Collection
     {
         /** @var Mage_Directory_Model_Resource_Country_Collection $mageCoreModelAbstract */
-        $mageCoreModelAbstract = Mage::getModel('directory/country_collection');
+        $mageCoreModelAbstract = Mage::getResourceModel('directory/country_collection');
         return $mageCoreModelAbstract;
     }
 }

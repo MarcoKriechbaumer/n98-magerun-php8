@@ -22,9 +22,9 @@ class ListCommand extends AbstractMagentoCommand
     {
         $this
             ->setName('dev:module:list')
-            ->addOption('codepool', null, InputOption::VALUE_OPTIONAL, 'Show modules in a specific codepool')
-            ->addOption('status', null, InputOption::VALUE_OPTIONAL, 'Show modules with a specific status')
-            ->addOption('vendor', null, InputOption::VALUE_OPTIONAL, 'Show modules of a specified vendor')
+            ->addOption('codepool', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Show modules in a specific codepool')
+            ->addOption('status', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Show modules with a specific status')
+            ->addOption('vendor', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Show modules of a specified vendor')
             ->setAliases(['sys:modules:list'])// deprecated
             ->setDescription('List all installed modules')
             ->addFormatOption();
@@ -32,7 +32,7 @@ class ListCommand extends AbstractMagentoCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
 
         if ($input->getOption('format') === null) {
             $this->writeSection($output, 'Magento Modules');

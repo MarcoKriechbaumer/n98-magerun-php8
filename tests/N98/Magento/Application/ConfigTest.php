@@ -116,12 +116,12 @@ final class ConfigTest extends TestCase
         $bufferedOutput = new BufferedOutput();
         $bufferedOutput->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
 
-        $config = new Config([], false, $bufferedOutput);
+        $config = new Config([], isPharMode: false, output: $bufferedOutput);
         $config->setConfig($configArray);
 
         /** @var Application|MockObject $application */
         $application = $this->createMock(Application::class);
-        $application->expects(self::exactly(2))->method('add');
+        $application->expects($this->exactly(2))->method('add');
 
         $config->registerCustomCommands($application);
     }
@@ -136,7 +136,7 @@ final class ConfigTest extends TestCase
 
         $bufferedOutput = new BufferedOutput();
 
-        $config = new Config([], false, $bufferedOutput);
+        $config = new Config([], isPharMode: false, output: $bufferedOutput);
         $config->setConfig($array);
 
         $classLoader = new ClassLoader();
@@ -152,7 +152,7 @@ final class ConfigTest extends TestCase
     {
         $config = new Config();
         $this->assertSame([], $config->getDetectSubFolders());
-        $config->loadPartialConfig(false);
+        $config->loadPartialConfig(loadExternalConfig: false);
         $actual = $config->getDetectSubFolders();
         $this->assertIsArray($actual);
         $this->assertNotSame([], $actual);

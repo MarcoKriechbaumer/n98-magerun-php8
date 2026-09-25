@@ -42,7 +42,7 @@ class XmlRenderer implements RendererInterface
 
         $xml = $domDocument->saveXML($domDocument, LIBXML_NOEMPTYTAG);
         if ($xml) {
-            $output->write($xml, false, OutputInterface::OUTPUT_RAW);
+            $output->write($xml, newline: false, options: OutputInterface::OUTPUT_RAW);
         }
     }
 
@@ -95,7 +95,7 @@ class XmlRenderer implements RendererInterface
     {
         $name = $this->getName($key);
 
-        $base64 = in_array(preg_match('//u', $value), [0, false], true) || preg_match('/[\x0-\x8\xB-\xC\xE-\x1F]/', $value);
+        $base64 = in_array(preg_match('//u', $value), [0, false], strict: true) || preg_match('/[\x0-\x8\xB-\xC\xE-\x1F]/', $value);
 
         $domElement = $domDocument->createElement($name, $base64 ? base64_encode($value) : $value);
 
@@ -117,7 +117,7 @@ class XmlRenderer implements RendererInterface
             throw new RuntimeException(
                 sprintf(
                     'Encoding error, only US-ASCII and UTF-8 supported, can not process %s',
-                    var_export($string, true),
+                    var_export($string, return: true),
                 ),
             );
         }
@@ -125,7 +125,7 @@ class XmlRenderer implements RendererInterface
         try {
             new DOMElement($name);
         } catch (DOMException $domException) {
-            throw new DOMException(sprintf('Invalid name %s', var_export($name, true)), $domException->getCode(), $domException);
+            throw new DOMException(sprintf('Invalid name %s', var_export($name, return: true)), $domException->getCode(), $domException);
         }
 
         return $name;

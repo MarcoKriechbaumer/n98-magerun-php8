@@ -45,7 +45,7 @@ class RendererFactory
             throw new InvalidArgumentException(
                 sprintf(
                     'Unknown format %s, known formats are: %s',
-                    var_export($format, true),
+                    var_export($format, return: true),
                     implode(',', self::getFormats()),
                 ),
             );

@@ -30,9 +30,9 @@ class CreateDummyCommand extends AbstractCustomerCommand
             ->addArgument('website', InputArgument::OPTIONAL, 'Website')
             ->addOption(
                 'with-addresses',
-                null,
-                InputOption::VALUE_NONE,
-                'Create dummy billing/shipping addresses for each customers',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Create dummy billing/shipping addresses for each customers',
             )
             ->setDescription('Generate dummy customers. You can specify a count and a locale.')
             ->addFormatOption()
@@ -64,7 +64,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }
@@ -95,8 +95,8 @@ HELP;
             if (!$customer->getId()) {
                 $customer->setWebsiteId((int) $website->getId());
                 $customer->setEmail($email);
-                $customer->setFirstname($generator->firstName); # @phpstan-ignore method.notFound (missing in current OpenMage)
-                $customer->setLastname($generator->lastName);   # @phpstan-ignore method.notFound (missing in current OpenMage)
+                $customer->setFirstname($generator->firstName);
+                $customer->setLastname($generator->lastName);
                 $customer->setPassword($password);
                 if ($input->hasOption('with-addresses')) {
                     $address = $this->createAddress($generator);
@@ -142,7 +142,7 @@ HELP;
             ->addCountryCodeFilter($faker->countryCode, 'iso2')
             ->getFirstItem();
 
-        $regions = $country->getRegions()->getData(); # @phpstan-ignore method.notFound (missing in current OpenMage)
+        $regions = $country->getRegions()->getData();
         $region = $regions ? $regions[array_rand($regions)] : null;
 
         $mageCustomerModelAddress = $this->getAddressModel();

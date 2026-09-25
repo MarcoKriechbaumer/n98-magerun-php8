@@ -126,7 +126,7 @@ ftw</Column2>
     public function testTableRendering($rows, $expected)
     {
         $xmlRenderer = new XmlRenderer();
-        $streamOutput = new StreamOutput(fopen('php://memory', 'wb', false));
+        $streamOutput = new StreamOutput(fopen('php://memory', 'wb', use_include_path: false));
 
         $xmlRenderer->render($streamOutput, $rows);
 

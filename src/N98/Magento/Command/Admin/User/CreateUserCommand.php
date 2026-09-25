@@ -33,14 +33,14 @@ class CreateUserCommand extends AbstractAdminUserCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if ($this->initMagento()) {
             $username = $this->getOrAskForArgument('username', $input, $output);
             $email = $this->getOrAskForArgument('email', $input, $output);
             if (($password = $input->getArgument('password')) === null) {
                 $dialog = $this->getQuestionHelper();
                 $question = new Question('<question>Password:</question> ');
-                $question->setHidden(true);
+                $question->setHidden(hidden: true);
                 $password = $dialog->ask($input, $output, $question);
             }
 

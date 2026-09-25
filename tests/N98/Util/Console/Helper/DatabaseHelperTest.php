@@ -29,7 +29,6 @@ final class DatabaseHelperTest extends TestCase
     private function getHelper()
     {
         $command = $this->getApplication()->find('db:info');
-        $command->getHelperSet()->setCommand($command);
 
         return $command->getHelper('database');
     }
@@ -134,7 +133,8 @@ final class DatabaseHelperTest extends TestCase
         $dbSettings = $databaseHelper->getDbSettings();
         $reflectionObject = new ReflectionObject($dbSettings);
         $reflectionProperty = $reflectionObject->getProperty('config');
-        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setAccessible(accessible: true);
+        $this->assertInstanceOf(\N98\Magento\DbSettings::class, $dbSettings);
 
         $config = $reflectionProperty->getValue($dbSettings);
         $previous = $config['prefix'];
@@ -148,13 +148,13 @@ final class DatabaseHelperTest extends TestCase
         $config['prefix'] = $previous . 'core_';
         $reflectionProperty->setValue($dbSettings, $config);
 
-        $tables = $databaseHelper->getTables(null); // default value should be null-able and is false
+        $tables = $databaseHelper->getTables(withoutPrefix: null); // default value should be null-able and is false
         $this->assertIsArray($tables);
         $this->assertNotContains('admin_user', $tables);
         $this->assertContains('core_store', $tables);
         $this->assertContains('core_website', $tables);
 
-        $tables = $databaseHelper->getTables(true);
+        $tables = $databaseHelper->getTables(withoutPrefix: true);
         $this->assertIsArray($tables);
         $this->assertNotContains('admin_user', $tables);
         $this->assertContains('store', $tables);

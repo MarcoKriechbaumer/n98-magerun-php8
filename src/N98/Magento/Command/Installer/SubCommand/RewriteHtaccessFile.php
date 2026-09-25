@@ -19,9 +19,9 @@ class RewriteHtaccessFile extends AbstractSubCommand
             return;
         }
 
-        $this->getCommand()->getApplication()->setAutoExit(false);
+        $this->getCommand()->getApplication()->setAutoExit(boolean: false);
 
-        $flag = $this->getOptionalBooleanOption('replaceHtaccessFile', 'Write BaseURL to .htaccess file?', false);
+        $flag = $this->getOptionalBooleanOption('replaceHtaccessFile', 'Write BaseURL to .htaccess file?', default: false);
 
         if ($flag) {
             $this->replaceHtaccessFile();

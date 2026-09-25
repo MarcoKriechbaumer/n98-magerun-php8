@@ -138,7 +138,7 @@ class InfoCommand extends AbstractMagentoCommand
             $finder = Finder::create();
             $finder
                 ->files()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->in($folders);
             $this->infos['Core Autoloader Overwrites'] = $finder->count();
         }
@@ -159,7 +159,7 @@ class InfoCommand extends AbstractMagentoCommand
             $finder = Finder::create();
             $finder
                 ->directories()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->in($codePoolDir)
                 ->depth(0)
                 ->sortByName();

@@ -33,7 +33,7 @@ class CreateCommand extends AbstractCustomerCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }
@@ -43,7 +43,7 @@ class CreateCommand extends AbstractCustomerCommand
         // Password
         if (($password = $input->getArgument('password')) == null) {
             $question = new Question('<question>Password:</question> ');
-            $question->setHidden(true);
+            $question->setHidden(hidden: true);
             $password = $questionHelper->ask($input, $output, $question);
         }
 
@@ -76,8 +76,8 @@ class CreateCommand extends AbstractCustomerCommand
         if (!$mageCustomerModelCustomer->getId()) {
             $mageCustomerModelCustomer->setWebsiteId((int) $website->getId());
             $mageCustomerModelCustomer->setEmail($email);
-            $mageCustomerModelCustomer->setFirstname($firstname);   # @phpstan-ignore method.notFound (missing in current OpenMage)
-            $mageCustomerModelCustomer->setLastname($lastname);     # @phpstan-ignore method.notFound (missing in current OpenMage)
+            $mageCustomerModelCustomer->setFirstname($firstname);
+            $mageCustomerModelCustomer->setLastname($lastname);
             $mageCustomerModelCustomer->setPassword($password);
             $mageCustomerModelCustomer->save();
             $mageCustomerModelCustomer->setConfirmation(null);

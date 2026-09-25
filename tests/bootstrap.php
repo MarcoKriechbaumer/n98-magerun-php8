@@ -20,7 +20,7 @@ if (false === $base) {
 @session_start();
 /** @var ClassLoader $loader */
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->setUseIncludePath(true);
+$loader->setUseIncludePath(useIncludePath: true);
 
 $paths = [
     $base . '/app/code/local',

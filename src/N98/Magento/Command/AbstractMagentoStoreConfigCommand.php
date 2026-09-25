@@ -90,24 +90,24 @@ abstract class AbstractMagentoStoreConfigCommand extends AbstractMagentoCommand
         $this
             ->addOption(
                 self::COMMAND_OPTION_ON,
-                null,
-                InputOption::VALUE_NONE,
-                'Switch on',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Switch on',
             )
             ->addOption(
                 self::COMMAND_OPTION_OFF,
-                null,
-                InputOption::VALUE_NONE,
-                'Switch off',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Switch off',
             )
         ;
 
         if ($this->scope === self::SCOPE_STORE_VIEW_GLOBAL) {
             $this->addOption(
                 self::COMMAND_OPTION_GLOBAL,
-                null,
-                InputOption::VALUE_NONE,
-                'Set value on default scope',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Set value on default scope',
             );
         }
 
@@ -124,14 +124,14 @@ abstract class AbstractMagentoStoreConfigCommand extends AbstractMagentoCommand
     {
         // for backwards compatibility before v3.0
         // @phpstan-ignore function.alreadyNarrowedType
-        if (property_exists($this, 'commandName')) {
-            $output->writeln('<warning>Property "commandName" is deprecated, use "public static $defaultName"</warning>');
+        if (property_exists($this, 'commandName') && $this->commandName) {
+            $output->writeln('<warning>Property "commandName" is deprecated, use the #[AsCommand] attribute</warning>');
         }
 
         // for backwards compatibility before v3.0
         // @phpstan-ignore function.alreadyNarrowedType
-        if (property_exists($this, 'commandDescription')) {
-            $output->writeln('<warning>Property "commandDescription" is deprecated, use "public static $defaultDescription"</warning>');
+        if (property_exists($this, 'commandDescription') && $this->commandDescription) {
+            $output->writeln('<warning>Property "commandDescription" is deprecated, use the #[AsCommand] attribute</warning>');
         }
 
         parent::initialize($input, $output);

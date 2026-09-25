@@ -35,9 +35,9 @@ class DuplicatesCommand extends AbstractMagentoCommand
             )
             ->addOption(
                 'log-junit',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Log duplicates in JUnit XML format to defined file.',
+                shortcut: null,
+                mode: InputOption::VALUE_REQUIRED,
+                description: 'Log duplicates in JUnit XML format to defined file.',
             )
             ->setDescription('Find duplicate files (templates, layout, locale, etc.) between two themes.')
         ;
@@ -52,7 +52,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $time = microtime(true);
+        $time = microtime(as_float: true);
         $this->detectMagento($output);
 
         $referenceFiles = $this->getChecksums(
@@ -72,7 +72,7 @@ HELP;
         }
 
         if ($input->getOption('log-junit')) {
-            $this->logJUnit($input, $duplicates, $input->getOption('log-junit'), microtime(true) - $time);
+            $this->logJUnit($input, $duplicates, $input->getOption('log-junit'), microtime(as_float: true) - $time);
         } elseif ($duplicates === []) {
             $output->writeln('<info>No duplicates were found</info>');
         } else {
@@ -88,9 +88,9 @@ HELP;
         $finder = Finder::create();
         $finder
             ->files()
-            ->ignoreUnreadableDirs(true)
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true)
+            ->ignoreUnreadableDirs(ignore: true)
+            ->ignoreDotFiles(ignoreDotFiles: true)
+            ->ignoreVCS(ignoreVCS: true)
             ->followLinks()
             ->in($baseFolder);
         $checksums = [];

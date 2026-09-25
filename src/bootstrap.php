@@ -15,7 +15,7 @@ try {
     return MagerunBootstrap::createApplication();
 } catch (Exception $exception) {
     printf("%s: %s\n", get_class($exception), $exception->getMessage());
-    if (array_intersect(['-vvv', '-vv', '-v', '--verbose'], $argv) !== []) {
+    if (array_intersect(['-vvv', '-vv', '-v', '--verbose'], $_SERVER['argv'] ?? []) !== []) {
         printf("%s\n", $exception->getTraceAsString());
     }
 

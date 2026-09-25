@@ -26,7 +26,7 @@ class ExportCommand extends AbstractMagentoCommand
             ->setDescription('Export inline translations')
             ->addArgument('locale', InputOption::VALUE_REQUIRED, 'Locale')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Export filename')
-            ->addOption('store', null, InputOption::VALUE_OPTIONAL, 'Limit to a special store');
+            ->addOption('store', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Limit to a special store');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -52,7 +52,7 @@ class ExportCommand extends AbstractMagentoCommand
         $sql = 'SELECT * FROM core_translate WHERE locale = :locale';
         if ($input->getOption('store')) {
             $sql .= ' AND store_id = :store_id';
-            $parameters['store_id'] = Mage::app()->getStore($input->getOption('store'));
+            $parameters['store_id'] = Mage::app()->getStore($input->getOption('store'))->getId();
         }
 
         $statement = $pdo->prepare($sql);

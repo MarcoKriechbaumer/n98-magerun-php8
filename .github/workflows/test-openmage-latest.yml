@@ -11,8 +11,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        openmage_version: ["20.16.0"]
-        php_version: ["8.5", "8.1"]
+        openmage_version: ["20.18.0"]
+        php_version: ["8.5", "8.2"]
         mysql_version: ["8.0", "5.7"]
 
     services:

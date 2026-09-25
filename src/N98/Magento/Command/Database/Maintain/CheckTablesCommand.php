@@ -45,17 +45,17 @@ class CheckTablesCommand extends AbstractMagentoCommand
             ->setDescription('Check database tables')
             ->addOption(
                 'type',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Check type (one of QUICK, FAST, MEDIUM, EXTENDED, CHANGED)',
-                'MEDIUM',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Check type (one of QUICK, FAST, MEDIUM, EXTENDED, CHANGED)',
+                default: 'MEDIUM',
             )
-            ->addOption('repair', null, InputOption::VALUE_NONE, 'Repair tables (only MyISAM)')
+            ->addOption('repair', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Repair tables (only MyISAM)')
             ->addOption(
                 'table',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Process only given table (wildcards are supported)',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Process only given table (wildcards are supported)',
             )
             ->addFormatOption();
     }
@@ -177,14 +177,14 @@ HELP;
     protected function _queryAlterTable(string $tableName, string $engine): array
     {
         $pdo = $this->dbHelper->getConnection($this->output);
-        $start = microtime(true);
+        $start = microtime(as_float: true);
         $affectedRows = $pdo->exec(sprintf('ALTER TABLE %s ENGINE=%s', $tableName, $engine));
 
         return [[
             'table'     => $tableName,
             'operation' => 'ENGINE ' . $engine,
             'type'      => sprintf('%15s rows', (string) $affectedRows),
-            'status'    => sprintf('%.3f secs', microtime(true) - $start),
+            'status'    => sprintf('%.3f secs', microtime(as_float: true) - $start),
         ]];
     }
 

@@ -33,7 +33,7 @@ class InstallSampleData extends AbstractSubCommand
             : $questionHelper->ask(
                 $this->input,
                 $this->output,
-                new ConfirmationQuestion('<question>Install sample data?</question> <comment>[yes]</comment>: ', true),
+                new ConfirmationQuestion('<question>Install sample data?</question> <comment>[yes]</comment>: ', default: true),
             );
 
         if (!$installSampleData) {

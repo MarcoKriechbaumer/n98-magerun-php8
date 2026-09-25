@@ -106,7 +106,7 @@ class ArrayFunctions
             return $array;
         }
 
-        $keys = array_fill_keys($columns, null);
+        $keys = array_fill_keys($columns, value: null);
         $keyed = array_intersect_key($array, $keys);
 
         $arrayLeftover = array_diff_key($array, $keyed);

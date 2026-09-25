@@ -27,29 +27,29 @@ class SetCommand extends AbstractConfigCommand
             ->addArgument('value', InputArgument::REQUIRED, 'The config value')
             ->addOption(
                 'scope',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                "The config value's scope (default, websites, stores)",
-                'default',
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: "The config value's scope (default, websites, stores)",
+                default: 'default',
             )
-            ->addOption('scope-id', null, InputOption::VALUE_OPTIONAL, "The config value's scope ID", '0')
+            ->addOption('scope-id', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: "The config value's scope ID", default: '0')
             ->addOption(
                 'encrypt',
-                null,
-                InputOption::VALUE_NONE,
-                "The config value should be encrypted using local.xml's crypt key",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "The config value should be encrypted using local.xml's crypt key",
             )
             ->addOption(
                 'force',
-                null,
-                InputOption::VALUE_NONE,
-                "Allow creation of non-standard scope-id's for websites and stores",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "Allow creation of non-standard scope-id's for websites and stores",
             )
             ->addOption(
                 'no-null',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not treat value NULL as ' . self::DISPLAY_NULL_UNKNOWN_VALUE . ' value',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Do not treat value NULL as ' . self::DISPLAY_NULL_UNKNOWN_VALUE . ' value',
             )
         ;
     }
@@ -64,7 +64,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }

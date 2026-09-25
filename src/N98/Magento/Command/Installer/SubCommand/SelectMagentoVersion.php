@@ -38,7 +38,7 @@ class SelectMagentoVersion extends AbstractSubCommand
                 if (!in_array(
                     $typeInput - 1,
                     range(0, count($this->commandConfig['magento-packages']) - 1),
-                    true,
+                    strict: true,
                 )) {
                     throw new InvalidArgumentException('Invalid type');
                 }

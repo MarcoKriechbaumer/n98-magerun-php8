@@ -22,8 +22,8 @@ class MaintenanceCommand extends AbstractMagentoCommand
     {
         $this
             ->setName('sys:maintenance')
-            ->addOption('on', null, InputOption::VALUE_NONE, 'Enable maintenance mode')
-            ->addOption('off', null, InputOption::VALUE_NONE, 'Disable maintenance mode')
+            ->addOption('on', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Enable maintenance mode')
+            ->addOption('off', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Disable maintenance mode')
             ->setDescription('Toggles maintenance mode.')
         ;
     }

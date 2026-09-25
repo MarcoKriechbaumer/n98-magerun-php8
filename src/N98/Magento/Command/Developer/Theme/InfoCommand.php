@@ -74,7 +74,7 @@ class InfoCommand extends AbstractMagentoCommand
             $output,
             'Current design setting on store: ' . $websiteCode . $mageCoreModelStore->getCode(),
         );
-        $storeInfoLines = $this->_parse($this->_configNodesWithExceptions, $mageCoreModelStore, true);
+        $storeInfoLines = $this->_parse($this->_configNodesWithExceptions, $mageCoreModelStore, withExceptions: true);
         $storeInfoLines = array_merge($storeInfoLines, $this->_parse($this->_configNodes, $mageCoreModelStore));
 
         $tableHelper = $this->getTableHelper();

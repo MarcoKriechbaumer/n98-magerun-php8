@@ -17,7 +17,7 @@ final class ConfigurationLoaderTest extends TestCase
 {
     public function testCreation()
     {
-        $configurationLoader = new ConfigurationLoader([], false, new NullOutput());
+        $configurationLoader = new ConfigurationLoader([], isPharMode: false, output: new NullOutput());
         $this->assertInstanceOf(__NAMESPACE__ . '\\ConfigurationLoader', $configurationLoader);
     }
 }

@@ -26,7 +26,7 @@ class RunCommand extends AbstractRepositoryCommand
             ->setName('script:repo:run')
             ->addArgument('script', InputArgument::OPTIONAL, 'Name of script in repository')
             ->addOption('define', 'd', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Defines a variable')
-            ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stops execution of script on error')
+            ->addOption('stop-on-error', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Stops execution of script on error')
             ->setDescription('Run script from repository')
         ;
     }
@@ -85,7 +85,7 @@ HELP;
 
             $selectedFile = $dialog->ask($input, $output, $choiceQuestion);
         } else {
-            $script = $input->getArgument('script');
+            $script = (string) $input->getArgument('script');
             if (substr($script, -strlen(self::MAGERUN_EXTENSION)) !== self::MAGERUN_EXTENSION) {
                 $script .= self::MAGERUN_EXTENSION;
             }

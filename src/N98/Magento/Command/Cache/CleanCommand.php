@@ -26,15 +26,15 @@ class CleanCommand extends AbstractCacheCommand
             ->addArgument('type', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Cache type code like "config"')
             ->addOption(
                 'reinit',
-                null,
-                InputOption::VALUE_NONE,
-                'Reinitialise the config cache after cleaning',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Reinitialise the config cache after cleaning',
             )
             ->addOption(
                 'no-reinit',
-                null,
-                InputOption::VALUE_NONE,
-                "Don't reinitialise the config cache after flushing",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "Don't reinitialise the config cache after flushing",
             )
             ->setDescription('Clean magento cache')
         ;
@@ -70,7 +70,7 @@ HELP;
         }
 
         $this->detectMagento($output);
-        if (!$this->initMagento(true)) {
+        if (!$this->initMagento(soft: true)) {
             return Command::INVALID;
         }
 

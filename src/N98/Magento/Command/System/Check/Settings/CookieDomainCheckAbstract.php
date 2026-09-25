@@ -94,7 +94,7 @@ abstract class CookieDomainCheckAbstract extends CheckAbstract
         }
 
         // cookie domain must at least contain a SLD.TLD, no match or match at offset 0 for '.' invalidates
-        if (in_array(strpos($cookieDomain, '.'), [0, false], true)) {
+        if (in_array(strpos($cookieDomain, '.'), [0, false], strict: true)) {
             return false;
         }
 
@@ -104,7 +104,7 @@ abstract class CookieDomainCheckAbstract extends CheckAbstract
         }
 
         $prefix = substr($siteDomain, 0, -$cookieLen);
-        if (in_array($prefix, [false, '', '0'], true)) {
+        if (in_array($prefix, [false, '', '0'], strict: true)) {
             return false;
         }
 

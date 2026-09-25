@@ -63,7 +63,7 @@ class ComposerHelper extends AbstractHelper implements InputAwareInterface
         $commandArgs[] = $key;
 
         try {
-            $composerOutput = $this->run($commandArgs, true);
+            $composerOutput = $this->run($commandArgs, silent: true);
 
             $lines = explode(PHP_EOL, $composerOutput);
 
@@ -128,8 +128,6 @@ class ComposerHelper extends AbstractHelper implements InputAwareInterface
 
     /**
      * Sets the Console Input.
-     *
-     * @return void
      */
-    public function setInput(InputInterface $input) {}
+    public function setInput(InputInterface $input): void {}
 }

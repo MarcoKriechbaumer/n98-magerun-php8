@@ -12,6 +12,7 @@ use N98\Magento\Application\Config;
 use N98\Magento\Application\ConfigurationLoader;
 use N98\Magento\Application\Console\Event;
 use N98\Magento\Application\Console\Events;
+use N98\Util\Console\Helper\DatabaseHelper;
 use N98\Util\Console\Helper\MagentoHelper;
 use N98\Util\Console\Helper\TwigHelper;
 use N98\Util\OperatingSystem;
@@ -56,13 +57,6 @@ class Application extends BaseApplication
 |_||_/_/\\___/   |_|_|_\\__,_\\__, \\___|_|  \\_,_|_||_|
                            |___/
 ";
-
-    /**
-     * Shadow copy of the Application parent when using this concrete setAutoExit() implementation
-     *
-     * @see BaseApplication
-     */
-    private bool $autoExitShadow = true;
 
     /**
      * @var ClassLoader|null
@@ -112,18 +106,6 @@ class Application extends BaseApplication
         }
 
         parent::__construct($appName, self::APP_VERSION);
-    }
-
-    /**
-     * @return bool previous auto-exit state
-     */
-    public function setAutoExit(bool $boolean): bool
-    {
-        $previous = $this->autoExitShadow;
-        $this->autoExitShadow = $boolean;
-        parent::setAutoExit($boolean);
-
-        return $previous;
     }
 
     protected function getDefaultInputDefinition(): InputDefinition
@@ -239,6 +221,10 @@ class Application extends BaseApplication
                 ? new $helperClass($this->config)
                 : new $helperClass()
             ;
+            if ($helper instanceof DatabaseHelper) {
+                $helper->setApplication($this);
+            }
+
             $helperSet->set($helper, $helperName);
         }
     }
@@ -323,7 +309,7 @@ class Application extends BaseApplication
             return null;
         }
 
-        $this->detectMagento(null, $output);
+        $this->detectMagento(output: $output);
         /* If magento is not installed yet, don't check */
         if (!file_exists($this->_magentoRootFolder . '/app/etc/local.xml')) {
             return null;
@@ -570,7 +556,7 @@ class Application extends BaseApplication
     {
         $this->_isInitialized       = false;
         $this->_magentoDetected     = false;
-        $this->_magentoRootFolder   = '';
+        $this->_magentoRootFolder   = null;
         $this->config               = null;
         $this->init($initConfig, $input, $output);
     }

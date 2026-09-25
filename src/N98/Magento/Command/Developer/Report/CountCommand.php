@@ -42,7 +42,11 @@ class CountCommand extends AbstractMagentoCommand
      */
     protected function getFileCount(string $path): int
     {
+        if (!is_dir($path)) {
+            return 0;
+        }
+
         $finder = Finder::create();
-        return $finder->files()->ignoreUnreadableDirs(true)->in($path)->count();
+        return $finder->files()->ignoreUnreadableDirs(ignore: true)->in($path)->count();
     }
 }

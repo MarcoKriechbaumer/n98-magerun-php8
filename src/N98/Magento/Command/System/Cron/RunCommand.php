@@ -115,7 +115,7 @@ HELP;
      */
     private function getCallbackFromRunConfigModel(string $runConfigModel, string $jobCode): array
     {
-        if (in_array(preg_match(self::REGEX_RUN_MODEL, $runConfigModel, $runMatches), [0, false], true)) {
+        if (in_array(preg_match(self::REGEX_RUN_MODEL, $runConfigModel, $runMatches), [0, false], strict: true)) {
             throw new RuntimeException(
                 sprintf(
                     'Invalid model/method definition "%s" for job "%s", expecting "model/class::method".',
@@ -135,7 +135,7 @@ HELP;
 
         $callback = [$model, $runMethod];
         $callableName = sprintf('%s::%s', $runModel, $runMethod);
-        if (!$model || !is_callable($callback, false, $callableName)) {
+        if (!$model || !is_callable($callback, syntax_only: false, callable_name: $callableName)) {
             throw new RuntimeException(sprintf('Invalid callback: %s for job "%s"', $callableName, $jobCode));
         }
 

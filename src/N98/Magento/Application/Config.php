@@ -31,7 +31,7 @@ class Config
 
     public const PSR_4 = 'PSR-4';
 
-    public const COMMAND_CLASS = 'Symfony\Component\Console\Command\Command';
+    public const COMMAND_CLASS = \Symfony\Component\Console\Command\Command::class;
 
     private array $config = [];
 
@@ -162,14 +162,13 @@ class Config
             return null;
         }
 
-        if (false === is_subclass_of($className, self::COMMAND_CLASS, true)) {
+        if (false === is_subclass_of($className, self::COMMAND_CLASS, allow_string: true)) {
             $className = is_object($className) ? get_class($className) : $className;
             throw new InvalidArgumentException(
                 sprintf('Class "%s" is not a Command (subclass of "%s")', $className, self::COMMAND_CLASS),
             );
         }
 
-        /** @var Command $command */
         $command = new $className();
         if (null !== $commandName) {
             $command->setName($commandName);

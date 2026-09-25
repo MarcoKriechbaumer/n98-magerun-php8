@@ -47,16 +47,16 @@ abstract class AbstractShowCommand extends AbstractDatabaseCommand
             ->addFormatOption()
             ->addOption(
                 'rounding',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Amount of decimals to display. If -1 then disabled',
-                0,
+                shortcut: null,
+                mode: InputOption::VALUE_OPTIONAL,
+                description: 'Amount of decimals to display. If -1 then disabled',
+                default: 0,
             )
             ->addOption(
                 'no-description',
-                null,
-                InputOption::VALUE_NONE,
-                'Disable description',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Disable description',
             );
     }
 

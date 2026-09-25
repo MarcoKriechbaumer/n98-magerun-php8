@@ -44,18 +44,18 @@ class CreateCommand extends AbstractMagentoCommand
             ->addArgument('vendorNamespace', InputArgument::REQUIRED, 'Namespace (your company prefix)')
             ->addArgument('moduleName', InputArgument::REQUIRED, 'Name of your module.')
             ->addArgument('codePool', InputArgument::OPTIONAL, 'Codepool (local, community)', 'local')
-            ->addOption('add-controllers', null, InputOption::VALUE_NONE, 'Adds controllers')
-            ->addOption('add-blocks', null, InputOption::VALUE_NONE, 'Adds blocks')
-            ->addOption('add-helpers', null, InputOption::VALUE_NONE, 'Adds helpers')
-            ->addOption('add-models', null, InputOption::VALUE_NONE, 'Adds models')
-            ->addOption('add-setup', null, InputOption::VALUE_NONE, 'Adds SQL setup')
-            ->addOption('add-all', null, InputOption::VALUE_NONE, 'Adds blocks, helpers and models')
-            ->addOption('modman', null, InputOption::VALUE_NONE, 'Create all files in folder with a modman file.')
-            ->addOption('add-readme', null, InputOption::VALUE_NONE, 'Adds a readme.md file to generated module')
-            ->addOption('add-composer', null, InputOption::VALUE_NONE, 'Adds a composer.json file to generated module')
-            ->addOption('author-name', null, InputOption::VALUE_OPTIONAL, 'Author for readme.md or composer.json')
-            ->addOption('author-email', null, InputOption::VALUE_OPTIONAL, 'Author for readme.md or composer.json')
-            ->addOption('description', null, InputOption::VALUE_OPTIONAL, 'Description for readme.md or composer.json')
+            ->addOption('add-controllers', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds controllers')
+            ->addOption('add-blocks', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds blocks')
+            ->addOption('add-helpers', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds helpers')
+            ->addOption('add-models', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds models')
+            ->addOption('add-setup', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds SQL setup')
+            ->addOption('add-all', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds blocks, helpers and models')
+            ->addOption('modman', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Create all files in folder with a modman file.')
+            ->addOption('add-readme', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds a readme.md file to generated module')
+            ->addOption('add-composer', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds a composer.json file to generated module')
+            ->addOption('author-name', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Author for readme.md or composer.json')
+            ->addOption('author-email', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Author for readme.md or composer.json')
+            ->addOption('description', shortcut: null, mode: InputOption::VALUE_OPTIONAL, description: 'Description for readme.md or composer.json')
             ->setDescription('Create and register a new magento module.');
     }
 
@@ -65,13 +65,13 @@ class CreateCommand extends AbstractMagentoCommand
 
         $this->modmanMode = $input->getOption('modman');
         if ($input->getOption('add-all')) {
-            $input->setOption('add-controllers', true);
-            $input->setOption('add-blocks', true);
-            $input->setOption('add-helpers', true);
-            $input->setOption('add-models', true);
-            $input->setOption('add-setup', true);
-            $input->setOption('add-readme', true);
-            $input->setOption('add-composer', true);
+            $input->setOption('add-controllers', value: true);
+            $input->setOption('add-blocks', value: true);
+            $input->setOption('add-helpers', value: true);
+            $input->setOption('add-models', value: true);
+            $input->setOption('add-setup', value: true);
+            $input->setOption('add-readme', value: true);
+            $input->setOption('add-composer', value: true);
         }
 
         if (!$this->modmanMode) {
@@ -83,7 +83,7 @@ class CreateCommand extends AbstractMagentoCommand
         $this->vendorNamespace = ucfirst($input->getArgument('vendorNamespace'));
         $this->moduleName = ucfirst($input->getArgument('moduleName'));
         $this->codePool = $input->getArgument('codePool');
-        if (!in_array($this->codePool, ['local', 'community'])) {
+        if (!in_array($this->codePool, ['local', 'community'], strict: true)) {
             throw new InvalidArgumentException('Code pool must "community" or "local"');
         }
 
@@ -127,9 +127,9 @@ class CreateCommand extends AbstractMagentoCommand
                 throw new RuntimeException('Module already exists. Stop.');
             }
 
-            mkdir($modManDir, 0777, true);
+            mkdir($modManDir, 0777, recursive: true);
             $this->_magentoRootFolder = './' . $modManDir;
-            mkdir($this->_magentoRootFolder . '/app/etc/modules', 0777, true);
+            mkdir($this->_magentoRootFolder . '/app/etc/modules', 0777, recursive: true);
         }
 
         $moduleDir = sprintf(
@@ -145,7 +145,7 @@ class CreateCommand extends AbstractMagentoCommand
         }
 
         $this->moduleDirectory = $moduleDir;
-        mkdir($this->moduleDirectory, 0777, true);
+        mkdir($this->moduleDirectory, 0777, recursive: true);
         $output->writeln('<info>Created directory: <comment>' . $this->moduleDirectory . '<comment></info>');
 
         // Add etc folder
@@ -175,12 +175,12 @@ class CreateCommand extends AbstractMagentoCommand
         if ($input->getOption('add-setup')) {
             $sqlSetupFolder = $this->moduleDirectory . '/sql/' . strtolower($this->vendorNamespace) . '_' .
                 strtolower($this->moduleName) . '_setup';
-            mkdir($sqlSetupFolder, 0777, true);
+            mkdir($sqlSetupFolder, 0777, recursive: true);
             $output->writeln('<info>Created directory: <comment>' . $sqlSetupFolder . '<comment></info>');
 
             $dataSetupFolder = $this->moduleDirectory . '/data/' . strtolower($this->vendorNamespace) . '_' .
                 strtolower($this->moduleName) . '_setup';
-            mkdir($dataSetupFolder, 0777, true);
+            mkdir($dataSetupFolder, 0777, recursive: true);
             $output->writeln('<info>Created directory: <comment>' . $dataSetupFolder . '<comment></info>');
         }
     }
@@ -290,7 +290,7 @@ class CreateCommand extends AbstractMagentoCommand
                 $outFile = $this->getOutfile($outFileTemplate);
                 $outFileDir = dirname($outFile);
                 if (!is_dir($outFileDir)) {
-                    mkdir($outFileDir, 0777, true);
+                    mkdir($outFileDir, 0777, recursive: true);
                 }
 
                 /** @var TwigHelper $twigHelper */
@@ -306,8 +306,8 @@ class CreateCommand extends AbstractMagentoCommand
     {
         $paths = ['rootDir'   => $this->_magentoRootFolder, 'moduleDir' => $this->moduleDirectory];
 
-        /** @var TwigHelper $twig */
-        $twig = $this->getHelper('twig');
-        return $twig->renderString($filename, array_merge($this->twigVars, $paths));
+        /** @var TwigHelper $helper */
+        $helper = $this->getHelper('twig');
+        return $helper->renderString($filename, array_merge($this->twigVars, $paths));
     }
 }

@@ -14,7 +14,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           tools: composer:2
-          php-version: '7.4'
+          php-version: '8.2'
 
       - name: Checkout PR
         uses: actions/checkout@v5
@@ -52,4 +52,4 @@ jobs:
         run: bash ./build.sh
 
       - name: Test self-update command
-        run: php ./n98-magerun.phar self-update --unstable
+        run: php ./n98-magerun.phar self-update --dry-run

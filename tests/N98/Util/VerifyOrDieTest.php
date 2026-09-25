@@ -30,7 +30,7 @@ final class VerifyOrDieTest extends TestCase
 
     public function testUserMessage()
     {
-        $message = sprintf('Database name %s is not portable', var_export('-fail', true));
+        $message = sprintf('Database name %s is not portable', var_export('-fail', return: true));
         try {
             VerifyOrDie::filename('-fail', $message);
             self::fail('An expected exception has not been thrown.');
@@ -50,7 +50,7 @@ final class VerifyOrDieTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Parameter basename must be of type string, NULL given');
-        VerifyOrDie::filename(null);
+        VerifyOrDie::filename(basename: null);
     }
 
     public function testStartWithDashFilename()

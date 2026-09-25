@@ -22,7 +22,7 @@ class PostInstallation extends AbstractSubCommand
      */
     public function execute(): void
     {
-        $this->getCommand()->getApplication()->setAutoExit(false);
+        $this->getCommand()->getApplication()->setAutoExit(boolean: false);
 
         chdir($this->config->getString('installationFolder'));
         $this->getCommand()->getApplication()->reinit();
@@ -30,7 +30,7 @@ class PostInstallation extends AbstractSubCommand
         $this->output->writeln('<info>Reindex all after installation</info>');
 
         $arrayInput = new ArrayInput(['command' => 'index:reindex:all']);
-        $arrayInput->setInteractive(false);
+        $arrayInput->setInteractive(interactive: false);
         $this->getCommand()->getApplication()->run(
             $arrayInput,
             $this->output,

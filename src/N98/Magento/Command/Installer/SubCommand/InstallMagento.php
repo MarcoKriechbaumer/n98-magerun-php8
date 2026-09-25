@@ -38,7 +38,7 @@ class InstallMagento extends AbstractSubCommand
             return $input;
         };
 
-        $this->getCommand()->getApplication()->setAutoExit(false);
+        $this->getCommand()->getApplication()->setAutoExit(boolean: false);
 
         $questionHelper = $this->getCommand()->getQuestionHelper();
 
@@ -196,7 +196,7 @@ class InstallMagento extends AbstractSubCommand
         );
 
         $validateBaseUrl = function ($url) {
-            if (in_array(preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url), [0, false], true)) {
+            if (in_array(preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url), [0, false], strict: true)) {
                 throw new InvalidArgumentException('Please enter a valid URL');
             }
 
@@ -318,9 +318,12 @@ class InstallMagento extends AbstractSubCommand
 
         $output->writeln('<info>Start installation process.</info>');
 
+        // hide deprecations, e.g. the E_STRICT constant used by the error handler of older OpenMage versions
+        // is deprecated since PHP 8.4 and makes the installation fail
         $installCommand = sprintf(
-            '%s -ddisplay_startup_errors=1 -ddisplay_errors=1 -derror_reporting=-1 -f %s -- %s',
+            '%s -ddisplay_startup_errors=1 -ddisplay_errors=1 -derror_reporting=%d -f %s -- %s',
             OperatingSystem::getPhpBinary(),
+            E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED,
             escapeshellarg($installationFolder . '/' . self::MAGENTO_INSTALL_SCRIPT_PATH),
             $installArgs,
         );
@@ -336,7 +339,7 @@ class InstallMagento extends AbstractSubCommand
 
         $exception = $exception ?? null;
         if (isset($exception) || $returnStatus !== Exec::CODE_CLEAN_EXIT) {
-            $this->getCommand()->getApplication()->setAutoExit(true);
+            $this->getCommand()->getApplication()->setAutoExit(boolean: true);
             throw new RuntimeException(
                 sprintf('Installation failed (Exit code %s). %s', $returnStatus, $installationOutput),
                 1,

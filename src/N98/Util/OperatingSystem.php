@@ -131,6 +131,6 @@ class OperatingSystem
     public static function isBashCompatibleShell(): bool
     {
         $env = getenv('SHELL');
-        return $env && in_array(basename($env), ['bash', 'zsh']);
+        return $env && in_array(basename($env), ['bash', 'zsh'], strict: true);
     }
 }

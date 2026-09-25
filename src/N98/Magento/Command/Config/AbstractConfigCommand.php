@@ -133,7 +133,7 @@ abstract class AbstractConfigCommand extends AbstractMagentoCommand
         }
 
         throw new InvalidArgumentException(
-            sprintf($mask, var_export($scopeId, true)),
+            sprintf($mask, var_export($scopeId, return: true)),
         );
     }
 

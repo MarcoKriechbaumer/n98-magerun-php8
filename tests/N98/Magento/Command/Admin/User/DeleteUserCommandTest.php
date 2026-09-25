@@ -231,7 +231,7 @@ final class DeleteUserCommandTest extends TestCase
 
         $questionHelper->expects($this->once())
             ->method('ask')
-            ->willReturn(true);
+            ->willReturn(value: true);
 
         // We override the standard helper with our mock
         $command->getHelperSet()->set($questionHelper, 'question');
@@ -281,7 +281,7 @@ final class DeleteUserCommandTest extends TestCase
 
         $questionHelper->expects($this->once())
             ->method('ask')
-            ->willReturn(false);
+            ->willReturn(value: false);
 
         // We override the standard helper with our mock
         $command->getHelperSet()->set($questionHelper, 'question');

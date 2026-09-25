@@ -17,7 +17,7 @@ final class CreateCommandTest extends TestCase
     public function testExecute()
     {
         $createCommand = $this->_getCommand();
-        $generatedEmail = uniqid('', true) . '@example.com';
+        $generatedEmail = uniqid('', more_entropy: true) . '@example.com';
 
         $this->getApplication()->initMagento();
 
@@ -30,7 +30,7 @@ final class CreateCommandTest extends TestCase
 
         // Format option
         $commandTester = new CommandTester($createCommand);
-        $generatedEmail = uniqid('', true) . '@example.com';
+        $generatedEmail = uniqid('', more_entropy: true) . '@example.com';
         $options['email'] = $generatedEmail;
         $options['--format'] = 'csv';
         $this->assertSame(0, $commandTester->execute($options));
@@ -47,14 +47,14 @@ final class CreateCommandTest extends TestCase
         self::markTestIncomplete('We currently cannot deal with interactive commands');
 
         $command = $this->_getCommand();
-        $generatedEmail = uniqid('', true) . '@example.com';
+        $generatedEmail = uniqid('', more_entropy: true) . '@example.com';
 
         // mock dialog
         // We mock the DialogHelper
         $dialog = $this->createMock(ParameterHelper::class);
         $dialog->expects(self::at(0))
             ->method('askPassword')
-            ->willReturn(true); // The user confirms
+            ->willReturn(value: true); // The user confirms
 
         // We override the standard helper with our mock
         $command->getHelperSet()->set($dialog, 'parameter');

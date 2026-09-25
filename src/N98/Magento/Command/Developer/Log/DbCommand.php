@@ -21,8 +21,8 @@ class DbCommand extends AbstractLogCommand
     {
         $this
             ->setName('dev:log:db')
-            ->addOption('on', null, InputOption::VALUE_NONE, 'Force logging')
-            ->addOption('off', null, InputOption::VALUE_NONE, 'Disable logging')
+            ->addOption('on', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Force logging')
+            ->addOption('off', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Disable logging')
             ->setDescription('Turn on/off database query logging');
     }
 

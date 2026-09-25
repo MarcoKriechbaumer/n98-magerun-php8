@@ -25,6 +25,9 @@ use N98\Util\AutoloadHandler;
  */
 final class ClassExistsCheckerTest extends TestCase
 {
+    /**
+     * @var \Closure[]
+     */
     private array $cleanup = [];
 
     protected function tearDown(): void
@@ -167,7 +170,7 @@ final class ClassExistsCheckerTest extends TestCase
     private function getAutoloader()
     {
         return function ($className) {
-            if (in_array(preg_match('~^(Le_Foo_Le_Bar)~', $className), [0, false], true)) {
+            if (in_array(preg_match('~^(Le_Foo_Le_Bar)~', $className), [0, false], strict: true)) {
                 return false;
             }
 

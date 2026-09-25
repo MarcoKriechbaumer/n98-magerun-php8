@@ -41,6 +41,6 @@ final class ClassUtil
      */
     public function isA(ClassUtil $classUtil): bool
     {
-        return is_a($this->className, $classUtil->className, true);
+        return is_a($this->className, $classUtil->className, allow_string: true);
     }
 }

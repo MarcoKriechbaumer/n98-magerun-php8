@@ -29,15 +29,15 @@ class ListCommand extends AbstractMagentoCommand
             ->addFormatOption()
             ->addOption(
                 'sort',
-                null,
-                InputOption::VALUE_NONE,
-                'Sort by event name ascending',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Sort by event name ascending',
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::INVALID;
         }

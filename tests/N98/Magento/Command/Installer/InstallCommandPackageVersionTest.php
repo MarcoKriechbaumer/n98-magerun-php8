@@ -29,7 +29,7 @@ final class InstallCommandPackageVersionTest extends TestCase
         $installCommandTester = new InstallCommandTester();
         $packages = $installCommandTester->getMagentoPackages($command);
 
-        $this->assertOngoingPackageVersions($packages, 2, 5);
+        $this->assertOngoingPackageVersions($packages, 1, 5);
     }
 
     /**
@@ -154,7 +154,7 @@ final class InstallCommandPackageVersionTest extends TestCase
      */
     private function isTripartiteOpenMageVersionNumber($buffer)
     {
-        if (in_array(preg_match('~^(?:19|2\d)\.\d+\.\d+$~', $buffer), [0, false], true)) {
+        if (in_array(preg_match('~^(?:19|2\d)\.\d+\.\d+$~', $buffer), [0, false], strict: true)) {
             return false;
         }
 
@@ -173,7 +173,7 @@ final class InstallCommandPackageVersionTest extends TestCase
      */
     private function isQuadripartiteVersionNumber($buffer)
     {
-        if (in_array(preg_match('~^\d+\.\d+\.\d+\.\d+$~', $buffer), [0, false], true)) {
+        if (in_array(preg_match('~^\d+\.\d+\.\d+\.\d+$~', $buffer), [0, false], strict: true)) {
             return false;
         }
 

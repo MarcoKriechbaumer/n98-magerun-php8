@@ -28,7 +28,7 @@ class ListCommand extends AbstractCronCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
 
         if ($input->getOption('format') === null) {
             $this->writeSection($output, 'Cronjob List');

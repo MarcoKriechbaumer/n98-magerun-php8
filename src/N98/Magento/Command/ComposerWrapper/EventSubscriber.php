@@ -39,7 +39,7 @@ class EventSubscriber implements EventSubscriberInterface
          * Inject composer object in composer commands
          */
         $command = $consoleEvent->getCommand();
-        if (strstr($command !== null ? get_class($command) : self::class, 'Composer\\Command\\')) {
+        if (strstr($command instanceof \Symfony\Component\Console\Command\Command ? get_class($command) : self::class, 'Composer\\Command\\')) {
             $consoleIO          = new ConsoleIO($consoleEvent->getInput(), $consoleEvent->getOutput(), $command->getHelperSet());
             /** @var Application $application */
             $application        = $command->getApplication();

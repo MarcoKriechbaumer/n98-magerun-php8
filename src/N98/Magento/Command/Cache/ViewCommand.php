@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N98\Magento\Command\Cache;
 
+use InvalidArgumentException;
 use Mage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,9 +38,13 @@ class ViewCommand extends AbstractCacheCommand
 
         $cacheInstance = Mage::app()->getCache();
         $cacheData = $cacheInstance->load($input->getArgument('id'));
+        if ($cacheData === false) {
+            throw new InvalidArgumentException('Cache entry not found: ' . $input->getArgument('id'));
+        }
+
         if ($input->getOption('unserialize')) {
             $cacheData = unserialize($cacheData);
-            $cacheData = print_r($cacheData, true);
+            $cacheData = print_r($cacheData, return: true);
         }
 
         $output->writeln($cacheData);

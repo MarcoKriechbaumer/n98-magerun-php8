@@ -35,7 +35,7 @@ final class TextRendererTest extends TestCase
     public function testRendering()
     {
         $textRenderer = new TextRenderer();
-        $streamOutput = new StreamOutput(fopen('php://memory', 'wb', false));
+        $streamOutput = new StreamOutput(fopen('php://memory', 'wb', use_include_path: false));
 
         $rows = [['Column1' => 'Value A1', 'Column2' => 'A2 is another value that there is'], [1, "multi\nline\nftw"], ['C1 cell here!', new SimpleXMLElement('<r>PHP Magic->toString() test</r>')]];
 

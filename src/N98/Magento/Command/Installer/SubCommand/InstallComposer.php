@@ -43,7 +43,7 @@ class InstallComposer extends AbstractSubCommand
         $this->output->writeln('<info>Found executable <comment>' . $composerBin . '</comment></info>');
         $this->config['composer_bin'] = [$composerBin];
 
-        $composerUseSamePhpBinary = $this->hasFlagOrOptionalBoolOption('composer-use-same-php-binary', false);
+        $composerUseSamePhpBinary = $this->hasFlagOrOptionalBoolOption('composer-use-same-php-binary', default: false);
         if ($composerUseSamePhpBinary) {
             $this->config['composer_bin'] = [
                 OperatingSystem::getPhpBinary(),
@@ -100,7 +100,7 @@ class InstallComposer extends AbstractSubCommand
     protected function getMajorComposerVersion(): int
     {
         Exec::run(implode(' ', array_merge($this->config['composer_bin'], [' --version'])), $output);
-        if (in_array(preg_match('#(\d+)\.(\d+)\.(\d+)#', $output, $matches), [0, false], true)) {
+        if (in_array(preg_match('#(\d+)\.(\d+)\.(\d+)#', $output, $matches), [0, false], strict: true)) {
             throw new Exception('Could not detect a valid Composer version');
         }
 

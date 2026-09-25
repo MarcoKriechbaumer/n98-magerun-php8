@@ -24,15 +24,15 @@ class FlushCommand extends AbstractCacheCommand
             ->setName('cache:flush')
             ->addOption(
                 'reinit',
-                null,
-                InputOption::VALUE_NONE,
-                'Reinitialise the config cache after flushing',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Reinitialise the config cache after flushing',
             )
             ->addOption(
                 'no-reinit',
-                null,
-                InputOption::VALUE_NONE,
-                "Don't reinitialise the config cache after flushing",
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: "Don't reinitialise the config cache after flushing",
             )
             ->setDescription('Flush magento cache storage')
         ;
@@ -53,7 +53,7 @@ HELP;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
 
         $noReinitOption = $input->getOption('no-reinit');
         if (!$noReinitOption) {

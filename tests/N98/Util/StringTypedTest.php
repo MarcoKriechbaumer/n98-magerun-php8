@@ -24,7 +24,7 @@ final class StringTypedTest extends TestCase
     {
         $this->assertTrue(StringTyped::parseBoolOption('true'));
 
-        $this->assertSame('inactive', StringTyped::formatActive(null));
+        $this->assertSame('inactive', StringTyped::formatActive(value: null));
         $this->assertSame('active', StringTyped::formatActive('1'));
     }
 }

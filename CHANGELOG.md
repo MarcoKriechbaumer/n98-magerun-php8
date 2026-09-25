@@ -1,6 +1,28 @@
 RECENT CHANGES
 ==============
 
+Unreleased (fork MarcoKriechbaumer/n98-magerun-php8)
+----------------------------------------------------
+
+- Break: Require PHP 8.2 - 8.5, dropped PHP 7.4 - 8.1
+- Break: Installer offers OpenMage LTS 20.10.0 and newer only
+- Break: self-update and releases use the GitHub releases of this fork
+- Imp: Update 3rd party dependencies (Symfony 6.4 LTS, Twig, psysh, Faker, PHPStan, Rector, PHP-CS-Fixer)
+- Imp: Add OpenMage 20.17.0 and 20.18.0
+- Imp: Installer installs OpenMage without dev packages
+- Fix: Symfony 6 compatibility (removed HelperSet::setCommand(), static command names, setAutoExit())
+- Fix: Class conflicts with Symfony packages shipped by OpenMage (autoloader priority)
+- Fix: Phar could not load classes after OpenMage bootstrap disabled the phar stream wrapper
+- Fix: Phar resolved its autoloader relative to the current working directory
+- Fix: db:create failed on PHP 8 (PDO exceptions)
+- Fix: Installation of OpenMage 20.10 - 20.1x on PHP 8.4 aborted by E_STRICT deprecation
+- Fix: Installer ignored a failing composer install
+- Fix: PHP 8 TypeErrors in customer:create, customer:create:dummy, customer:change-password, customer:info,
+       dev:log:size, dev:module:update, dev:translate:export, dev:code:model:method, config:get, cache:view,
+       index:reindex, script:repo:run, list --format=json, help db:dump
+- Fix: dev:report:count without var/report folder
+- Fix: Post-installation reindex could not detect the Magento root folder
+
 3.0.1
 -----
 

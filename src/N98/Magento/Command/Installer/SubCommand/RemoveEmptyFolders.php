@@ -20,7 +20,7 @@ class RemoveEmptyFolders extends AbstractSubCommand
         if (is_dir(getcwd() . '/vendor')) {
             $finder = new Finder();
             $finder->files()->depth(3)->in(getcwd() . '/vendor');
-            if ($finder->count() == 0) {
+            if ($finder->count() === 0) {
                 $filesystem = new Filesystem();
                 $filesystem->recursiveRemoveDirectory(getcwd() . '/vendor');
             }

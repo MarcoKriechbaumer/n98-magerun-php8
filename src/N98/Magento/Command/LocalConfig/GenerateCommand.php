@@ -72,7 +72,7 @@ HELP;
         }
 
         $content = file_get_contents($configFileTemplate);
-        if (in_array($content, ['', '0', false], true)) {
+        if (in_array($content, ['', '0', false], strict: true)) {
             $output->writeln(sprintf('<error>Template files %s has no content</error>', dirname($configFileTemplate)));
             return Command::FAILURE;
         }

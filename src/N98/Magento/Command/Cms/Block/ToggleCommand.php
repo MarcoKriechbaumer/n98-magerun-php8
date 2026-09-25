@@ -39,7 +39,7 @@ class ToggleCommand extends AbstractMagentoCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->detectMagento($output, true);
+        $this->detectMagento($output, silent: true);
         if (!$this->initMagento()) {
             return Command::FAILURE;
         }

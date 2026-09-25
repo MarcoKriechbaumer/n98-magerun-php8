@@ -19,7 +19,7 @@ final class WindowsSystem
 
     public const FORBIDDEN_CHARS = '<>:"/\|?*';
 
-    private static ?WindowsSystem $windowsSystem;
+    private static ?WindowsSystem $windowsSystem = null;
 
     private array $extensions;
 

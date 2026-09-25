@@ -34,16 +34,16 @@ final class UpdateCommandTest extends TestCase
         $commandTester = new CommandTester($updateCommand);
 
         $moduleBaseFolder = $root . '/N98Magerun_UnitTest/src/app/code/local/N98Magerun/UnitTest/';
-        $dialog = $updateCommand->getHelper('dialog');
-        $dialog->setInputStream($this->getInputStream("2.0.0\n"));
+        $helper = $updateCommand->getHelper('dialog');
+        $helper->setInputStream($this->getInputStream("2.0.0\n"));
 
         $this->_setVersionOptionTest($commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addResourceModelOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addRoutersOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addEventsOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addLayoutUpdatesOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addTranslateOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
-        $this->_addDefaultOptionTest($dialog, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addResourceModelOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addRoutersOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addEventsOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addLayoutUpdatesOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addTranslateOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
+        $this->_addDefaultOptionTest($helper, $commandTester, $updateCommand, $moduleBaseFolder);
 
         $this->_deleteOldModule($root);
     }
@@ -68,7 +68,7 @@ final class UpdateCommandTest extends TestCase
 
     private function getInputStream($input)
     {
-        $stream = fopen('php://memory', 'rb+', false);
+        $stream = fopen('php://memory', 'rb+', use_include_path: false);
         fwrite($stream, $input);
 
         rewind($stream);

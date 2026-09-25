@@ -44,4 +44,25 @@ final class AutoloadRestorerTest extends TestCase
 
         $this->assertContains($callbackStub, spl_autoload_functions());
     }
+
+    public function testPrepend()
+    {
+        $callbackStub = function (): void {};
+        $laterStub = function (): void {};
+
+        $this->assertTrue(spl_autoload_register($callbackStub));
+
+        $autoloadRestorer = new AutoloadRestorer();
+
+        $this->assertTrue(spl_autoload_register($laterStub, throw: true, prepend: true));
+        $this->assertSame($laterStub, spl_autoload_functions()[0]);
+
+        $autoloadRestorer->prepend();
+
+        $functions = spl_autoload_functions();
+        $this->assertLessThan(array_search($laterStub, $functions, strict: true), array_search($callbackStub, $functions, strict: true));
+
+        spl_autoload_unregister($callbackStub);
+        spl_autoload_unregister($laterStub);
+    }
 }

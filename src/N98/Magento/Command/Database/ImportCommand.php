@@ -25,17 +25,17 @@ class ImportCommand extends AbstractDatabaseCommand
             ->setName('db:import')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Dump filename')
             ->addOption('compression', 'c', InputOption::VALUE_REQUIRED, 'The compression of the specified file')
-            ->addOption('only-command', null, InputOption::VALUE_NONE, 'Print only mysql command. Do not execute')
-            ->addOption('only-if-empty', null, InputOption::VALUE_NONE, 'Imports only if database is empty')
+            ->addOption('only-command', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Print only mysql command. Do not execute')
+            ->addOption('only-if-empty', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Imports only if database is empty')
             ->addOption(
                 'optimize',
-                null,
-                InputOption::VALUE_NONE,
-                'Convert verbose INSERTs to short ones before import (not working with compression)',
+                shortcut: null,
+                mode: InputOption::VALUE_NONE,
+                description: 'Convert verbose INSERTs to short ones before import (not working with compression)',
             )
-            ->addOption('drop', null, InputOption::VALUE_NONE, 'Drop and recreate database before import')
-            ->addOption('stdin', null, InputOption::VALUE_NONE, 'Import data from STDIN rather than file')
-            ->addOption('drop-tables', null, InputOption::VALUE_NONE, 'Drop tables before import')
+            ->addOption('drop', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Drop and recreate database before import')
+            ->addOption('stdin', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Import data from STDIN rather than file')
+            ->addOption('drop-tables', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Drop tables before import')
             ->setDescription('Imports database with mysql cli client according to database defined in local.xml');
     }
 

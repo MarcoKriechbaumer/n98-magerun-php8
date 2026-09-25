@@ -120,7 +120,7 @@ abstract class AbstractMagentoCommand extends Command
     {
         /** @var FormatterHelper $helper */
         $helper = $this->getHelper('formatter');
-        $output->writeln(['', $helper->formatBlock($text, $style, true), '']);
+        $output->writeln(['', $helper->formatBlock($text, $style, large: true), '']);
     }
 
     /**
@@ -243,7 +243,7 @@ abstract class AbstractMagentoCommand extends Command
                 escapeshellarg($package->getSourceReference()),
             );
             $existingTags = shell_exec($command);
-            if (in_array($existingTags, ['', '0', false, null], true)) {
+            if (in_array($existingTags, ['', '0', false, null], strict: true)) {
                 $command = sprintf('cd %s && git fetch', escapeshellarg($this->normalizePath($targetFolder)));
                 shell_exec($command);
             }
@@ -355,13 +355,6 @@ abstract class AbstractMagentoCommand extends Command
         return StringTyped::formatActive($value);
     }
 
-    public function run(InputInterface $input, OutputInterface $output): int
-    {
-        $this->getHelperSet()->setCommand($this);
-
-        return parent::run($input, $output);
-    }
-
     protected function chooseInstallationFolder(InputInterface $input, OutputInterface $output): void
     {
         /**
@@ -381,7 +374,7 @@ abstract class AbstractMagentoCommand extends Command
             }
 
             if (!is_dir($folderName)) {
-                if (!@mkdir($folderName, 0777, true)) {
+                if (!@mkdir($folderName, 0777, recursive: true)) {
                     throw new InvalidArgumentException('Cannot create folder.');
                 }
 
@@ -396,7 +389,7 @@ abstract class AbstractMagentoCommand extends Command
                         sprintf(
                             'Folder "%s" is not a Magento working copy (%s)',
                             $folderName,
-                            var_export($magentoHelper->getRootFolder(), true),
+                            var_export($magentoHelper->getRootFolder(), return: true),
                         ),
                     );
                 }
@@ -438,7 +431,7 @@ abstract class AbstractMagentoCommand extends Command
 
     protected function isSourceTypeRepository(string $type): bool
     {
-        return in_array($type, ['git', 'hg']);
+        return in_array($type, ['git', 'hg'], strict: true);
     }
 
     protected function getOrAskForArgument(string $argument, InputInterface $input, OutputInterface $output, ?string $message = null): ?string
@@ -514,16 +507,14 @@ abstract class AbstractMagentoCommand extends Command
      * Adds console command "format" option
      *
      * Output result as csv, json, xml or text
-     *
-     * @return $this
      */
     public function addFormatOption(): self
     {
         $this->addOption(
             'format',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'Output Format. One of [' . implode(',', RendererFactory::getFormats()) . ']',
+            shortcut: null,
+            mode: InputOption::VALUE_OPTIONAL,
+            description: 'Output Format. One of [' . implode(',', RendererFactory::getFormats()) . ']',
         );
         return $this;
     }

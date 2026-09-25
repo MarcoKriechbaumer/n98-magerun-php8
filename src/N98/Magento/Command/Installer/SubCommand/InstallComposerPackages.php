@@ -28,7 +28,7 @@ class InstallComposerPackages extends AbstractSubCommand
 
         $process->start();
         $process->wait(function ($type, $buffer): void {
-            $this->output->write('composer > ' . $buffer, false);
+            $this->output->write('composer > ' . $buffer, newline: false);
         });
     }
 }

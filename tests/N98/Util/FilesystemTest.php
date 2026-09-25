@@ -42,8 +42,8 @@ final class FilesystemTest extends TestCase
         $file2 = $folder2 . '/file2.txt';
         $dest = sys_get_temp_dir() . '/n98_copy_dest';
 
-        @mkdir($folder1, 0777, true);
-        @mkdir($folder2, 0777, true);
+        @mkdir($folder1, 0777, recursive: true);
+        @mkdir($folder2, 0777, recursive: true);
         touch($file1);
         touch($file2);
 
@@ -87,10 +87,10 @@ final class FilesystemTest extends TestCase
         $ignoreMe = $folder1 . '/ignore.me';
         $file2 = $folder2 . '/file2.txt';
         $dest = sys_get_temp_dir() . '/n98_copy_dest';
-        $this->filesystem->recursiveRemoveDirectory($dest, true);
+        $this->filesystem->recursiveRemoveDirectory($dest, empty: true);
 
-        @mkdir($folder1, 0777, true);
-        @mkdir($folder2, 0777, true);
+        @mkdir($folder1, 0777, recursive: true);
+        @mkdir($folder2, 0777, recursive: true);
         touch($file1);
         touch($ignoreMe);
         touch($file2);
@@ -125,8 +125,8 @@ final class FilesystemTest extends TestCase
         $symLinked = $tmp . '/n98_linked';
         $symLinkedFile = $symLinked . '/symlinkme.txt';
 
-        @mkdir($basePath, 0777, true);
-        @mkdir($symLinked, 0777, true);
+        @mkdir($basePath, 0777, recursive: true);
+        @mkdir($symLinked, 0777, recursive: true);
 
         touch($symLinkedFile);
 
@@ -148,8 +148,8 @@ final class FilesystemTest extends TestCase
         $file1 = $folder1 . '/file1.txt';
         $file2 = $folder2 . '/file2.txt';
 
-        @mkdir($folder1, 0777, true);
-        @mkdir($folder2, 0777, true);
+        @mkdir($folder1, 0777, recursive: true);
+        @mkdir($folder2, 0777, recursive: true);
         touch($file1);
         touch($file2);
 
@@ -166,8 +166,8 @@ final class FilesystemTest extends TestCase
         $file1 = $folder1 . '/file1.txt';
         $file2 = $folder2 . '/file2.txt';
 
-        @mkdir($folder1, 0777, true);
-        @mkdir($folder2, 0777, true);
+        @mkdir($folder1, 0777, recursive: true);
+        @mkdir($folder2, 0777, recursive: true);
         touch($file1);
         touch($file2);
 
@@ -197,12 +197,12 @@ final class FilesystemTest extends TestCase
         $file1 = $folder1 . '/file1.txt';
         $file2 = $folder2 . '/file2.txt';
 
-        @mkdir($folder1, 0777, true);
-        @mkdir($folder2, 0777, true);
+        @mkdir($folder1, 0777, recursive: true);
+        @mkdir($folder2, 0777, recursive: true);
         touch($file1);
         touch($file2);
 
-        $this->filesystem->recursiveRemoveDirectory($basePath, true);
+        $this->filesystem->recursiveRemoveDirectory($basePath, empty: true);
         $this->assertFileExists($basePath);
         $this->assertFileDoesNotExist($folder1);
         $this->assertFileDoesNotExist($folder2);

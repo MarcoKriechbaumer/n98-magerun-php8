@@ -165,10 +165,10 @@ class MagentoHelper extends AbstractHelper
             $finder = Finder::create();
             $finder
                 ->files()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->depth(0)
                 ->followLinks()
-                ->ignoreDotFiles(false)
+                ->ignoreDotFiles(ignoreDotFiles: false)
                 ->name('.basedir')
                 ->in($searchFolder);
 
@@ -211,10 +211,10 @@ class MagentoHelper extends AbstractHelper
             $finder = Finder::create();
             $finder
                 ->files()
-                ->ignoreUnreadableDirs(true)
+                ->ignoreUnreadableDirs(ignore: true)
                 ->depth(0)
                 ->followLinks()
-                ->ignoreDotFiles(false)
+                ->ignoreDotFiles(ignoreDotFiles: false)
                 ->name($stopFile)
                 ->in($searchFolder);
 
@@ -261,7 +261,7 @@ class MagentoHelper extends AbstractHelper
             ->in($searchFolder . '/app');
 
         if ($finder->count() > 0) {
-            $files = iterator_to_array($finder, false);
+            $files = iterator_to_array($finder, preserve_keys: false);
             /* @var \SplFileInfo $file */
 
             $this->_magentoRootFolder = $searchFolder;

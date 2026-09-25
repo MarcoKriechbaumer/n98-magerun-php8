@@ -42,10 +42,10 @@ class ListCommand extends AbstractMagentoCommand
     {
         $this
             ->setName('sys:url:list')
-            ->addOption('add-categories', null, InputOption::VALUE_NONE, 'Adds categories')
-            ->addOption('add-products', null, InputOption::VALUE_NONE, 'Adds products')
-            ->addOption('add-cmspages', null, InputOption::VALUE_NONE, 'Adds cms pages')
-            ->addOption('add-all', null, InputOption::VALUE_NONE, 'Adds categories, products and cms pages')
+            ->addOption('add-categories', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds categories')
+            ->addOption('add-products', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds products')
+            ->addOption('add-cmspages', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds cms pages')
+            ->addOption('add-all', shortcut: null, mode: InputOption::VALUE_NONE, description: 'Adds categories, products and cms pages')
             ->addArgument('stores', InputArgument::OPTIONAL, 'Stores (comma-separated list of store ids)')
             ->addArgument('linetemplate', InputArgument::OPTIONAL, 'Line template', '{url}')
             ->setDescription('Get all urls.');
@@ -78,9 +78,9 @@ HELP;
         }
 
         if ($input->getOption('add-all')) {
-            $input->setOption('add-categories', true);
-            $input->setOption('add-products', true);
-            $input->setOption('add-cmspages', true);
+            $input->setOption('add-categories', value: true);
+            $input->setOption('add-products', value: true);
+            $input->setOption('add-cmspages', value: true);
         }
 
         $stores = explode(',', (string) $input->getArgument('stores'));

@@ -40,7 +40,7 @@ HELP;
         $this->disableObservers();
 
         $processes = $this->getIndexerModel()->getProcessesCollection();
-        if (!$processes || !$this->executeProcesses($output, iterator_to_array($processes, false))) {
+        if (!$processes || !$this->executeProcesses($output, iterator_to_array($processes, preserve_keys: false))) {
             return Command::FAILURE;
         }
 

@@ -5,24 +5,19 @@ declare(strict_types=1);
 namespace N98\Magento\Command\Design;
 
 use N98\Magento\Command\AbstractMagentoStoreConfigCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * Toggle demo notice command
  *
  * @package N98\Magento\Command\Design
  */
+#[AsCommand(
+    name: 'design:demo-notice',
+    description: 'Toggles demo store notice for a store view',
+)]
 class DemoNoticeCommand extends AbstractMagentoStoreConfigCommand
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'design:demo-notice';
-
-    /**
-     * @var string
-     */
-    protected static $defaultDescription = 'Toggles demo store notice for a store view';
-
     protected string $configPath = 'design/head/demonotice';
 
     protected string $toggleComment = 'Demo Notice';

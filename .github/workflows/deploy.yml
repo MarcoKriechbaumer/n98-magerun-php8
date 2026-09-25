@@ -47,6 +47,13 @@ jobs:
       - name: Create checksum
         run: sha256sum n98-magerun.phar > n98-magerun.phar.sha256
 
+      # Claude skill with a command reference generated from this phar
+      - name: Package Claude skill
+        run: |
+          php n98-magerun.phar list --format=json > commands.json
+          php res/claude-skill/generate-reference.php commands.json res/claude-skill/n98-magerun/references/commands.md
+          (cd res/claude-skill && zip -r ../../n98-magerun.skill n98-magerun)
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v5
         with:
@@ -54,6 +61,7 @@ jobs:
           path: |
             n98-magerun.phar
             n98-magerun.phar.sha256
+            n98-magerun.skill
 
       - name: Create GitHub release
         if: startsWith(github.ref, 'refs/tags/')
@@ -63,4 +71,4 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" \
             --title "${GITHUB_REF_NAME}" \
             --notes "See [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CHANGELOG.md) for the changes." \
-            n98-magerun.phar n98-magerun.phar.sha256
+            n98-magerun.phar n98-magerun.phar.sha256 n98-magerun.skill

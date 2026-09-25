@@ -12,6 +12,7 @@ First release of the fork https://github.com/MarcoKriechbaumer/n98-magerun-php8
 - Imp: Update 3rd party dependencies (Symfony 6.4 LTS, Twig, psysh, Faker, PHPStan, Rector, PHP-CS-Fixer)
 - Imp: Add OpenMage 20.17.0 and 20.18.0
 - Imp: Installer installs OpenMage without dev packages
+- Add: Claude skill for n98-magerun (`n98-magerun.skill` release asset, command reference generated from the code)
 - Fix: Symfony 6 compatibility (removed HelperSet::setCommand(), static command names, setAutoExit())
 - Fix: Class conflicts with Symfony packages shipped by OpenMage (autoloader priority)
 - Fix: Phar could not load classes after OpenMage bootstrap disabled the phar stream wrapper

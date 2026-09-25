@@ -151,6 +151,25 @@ Use `--dry-run` to only check for a newer version. If the file was installed sys
 
 If you installed with Composer, update with `composer update n98/magerun`.
 
+Claude skill
+------------
+
+Every release contains `n98-magerun.skill`, a skill for Claude (Claude Code, the Claude apps and the API) that
+teaches it to use n98-magerun on Magento 1 / OpenMage shops: how to run it, which command fits which task, safety
+rules for commands that change data and the full command reference of the release.
+
+Install it in Claude Code by extracting it into your skills folder:
+
+.. code-block:: sh
+
+   curl -LO https://github.com/MarcoKriechbaumer/n98-magerun-php8/releases/latest/download/n98-magerun.skill
+   unzip n98-magerun.skill -d ~/.claude/skills/
+
+In the Claude apps upload the file as a skill in the settings.
+
+The source is in `res/claude-skill/n98-magerun`, `references/commands.md` is generated from the commands of
+n98-magerun with `res/claude-skill/generate-reference.php`.
+
 Autocompletion
 --------------
 

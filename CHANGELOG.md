@@ -1,8 +1,10 @@
 RECENT CHANGES
 ==============
 
-Unreleased (fork MarcoKriechbaumer/n98-magerun-php8)
-----------------------------------------------------
+4.0.0
+-----
+
+First release of the fork https://github.com/MarcoKriechbaumer/n98-magerun-php8
 
 - Break: Require PHP 8.2 - 8.5, dropped PHP 7.4 - 8.1
 - Break: Installer offers OpenMage LTS 20.10.0 and newer only

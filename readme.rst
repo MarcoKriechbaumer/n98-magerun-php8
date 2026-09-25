@@ -82,7 +82,7 @@ The command should execute successfully and show you the version number of n98-m
 
 .. code-block:: sh
 
-    n98-magerun 3.0.1 by valantic CEC
+    n98-magerun 4.0.0 by valantic CEC
 
 You now have successfully installed Magerun! You can tailor the installation further like installing it system-wide and
 enable autocomplete - read on for more information about these and other features.
@@ -125,7 +125,7 @@ Then require it and execute it from the vendor's bin folder:
     composer require n98/magerun:dev-master
     # ...
     ./vendor/bin/n98-magerun --version
-    n98-magerun 3.0.1 by valantic CEC
+    n98-magerun 4.0.0 by valantic CEC
 
 Install from source
 """""""""""""""""""
@@ -1582,7 +1582,7 @@ Pre-defined variables:
 * ${magento.root}    -> Magento Root-Folder
 * ${magento.version} -> Magento Version i.e. 1.9.4.5
 * ${magento.edition} -> Magento Edition -> Community or Enterprise
-* ${magerun.version} -> Magerun version i.e. 3.0.1
+* ${magerun.version} -> Magerun version i.e. 4.0.0
 * ${php.version}     -> PHP Version
 * ${script.file}     -> Current script file path
 * ${script.dir}      -> Current script file dir

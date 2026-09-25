@@ -1704,6 +1704,8 @@ How can you help?
 Thanks to
 ---------
 
+* Christian Münch and netz98 for creating n98-magerun, and all upstream maintainers and contributors of
+  `netz98/n98-magerun <https://github.com/netz98/n98-magerun>`_ this fork is based on.
 * Symfony2 Team for the great console component.
 * Composer Team for the downloader backend and the self-update command.
 * Francois Zaninotto for great Faker library.

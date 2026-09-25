@@ -55,7 +55,7 @@ jobs:
           (cd res/claude-skill && zip -r ../../n98-magerun.skill n98-magerun)
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: n98-magerun.phar
           path: |

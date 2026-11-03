@@ -34,4 +34,19 @@ final class ExecTest extends TestCase
         $this->expectException(RuntimeException::class);
         Exec::run('foobar');
     }
+
+    public function testExceptionMessageMasksPassword()
+    {
+        $command = 'false -h ' . escapeshellarg('localhost') . ' -u' . escapeshellarg('root')
+            . ' -p' . escapeshellarg("se'cr et") . ' ' . escapeshellarg('magento');
+
+        try {
+            Exec::run($command);
+            $this->fail('Expected RuntimeException was not thrown');
+        } catch (RuntimeException $runtimeException) {
+            $message = $runtimeException->getMessage();
+            $this->assertStringNotContainsString('cr et', $message);
+            $this->assertStringContainsString("-u'root' -p'***' 'magento'", $message);
+        }
+    }
 }

@@ -31,7 +31,7 @@ class Exec
     public static function run(string $command, ?string &$output = null, ?int &$returnCode = null): void
     {
         if (!self::allowed()) {
-            $message = sprintf("No PHP exec(), can not execute command '%s'.", $command);
+            $message = sprintf("No PHP exec(), can not execute command '%s'.", self::maskPasswords($command));
             throw new RuntimeException($message);
         }
 
@@ -46,7 +46,7 @@ class Exec
 
         if ($returnCode !== self::CODE_CLEAN_EXIT) {
             throw new RuntimeException(
-                sprintf('Exit status %d for command %s. Output was: %s', $returnCode, $command, $output),
+                sprintf('Exit status %d for command %s. Output was: %s', $returnCode, self::maskPasswords($command), $output),
             );
         }
     }
@@ -57,6 +57,22 @@ class Exec
     public static function allowed(): bool
     {
         return function_exists('exec');
+    }
+
+    /**
+     * Replaces the value of mysql/mysqldump "-p<password>" arguments, so the
+     * database password does not end up in error messages.
+     *
+     * Matches the value as quoted by escapeshellarg(): single quotes on
+     * POSIX shells (with ' escaped as '\''), double quotes on Windows.
+     */
+    private static function maskPasswords(string $command): string
+    {
+        return (string) preg_replace(
+            '/(?<!\S)-p(?:\'(?:[^\']|\'\\\\\'\')*\'|"[^"]*")/',
+            "-p'***'",
+            $command,
+        );
     }
 
     /**

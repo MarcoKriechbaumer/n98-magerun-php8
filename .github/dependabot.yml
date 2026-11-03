@@ -4,6 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      # OpenMage requires nesbot/carbon ^2 and n98-magerun's autoloader takes
+      # precedence over OpenMage's, so Carbon 3 would also replace it in core
+      - dependency-name: "nesbot/carbon"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

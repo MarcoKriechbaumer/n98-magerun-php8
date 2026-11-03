@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N98\Magento\Command\Database;
 
+use N98\Util\Exec;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -41,36 +42,21 @@ class ConsoleCommand extends AbstractDatabaseCommand
     {
         $this->detectDbSettings($output);
 
-        $args = [$input->getOption('use-mycli-instead-of-mysql') ? 'mycli' : 'mysql'];
+        $useMycli = (bool) $input->getOption('use-mycli-instead-of-mysql');
+        $databaseHelper = $this->getDatabaseHelper();
+
+        // the mysql option file with the password has to be the first argument; mycli gets the password as -p
+        $args = [
+            $useMycli ? 'mycli' : 'mysql',
+            $databaseHelper->getMysqlClientToolConnectionString(passwordOnFd3: !$useMycli),
+        ];
 
         if ($input->getOption('no-auto-rehash')) {
             $args[] = '--no-auto-rehash';
         }
 
-        $args[] = $this->getMysqlClientToolConnection();
+        Exec::passthru(implode(' ', $args), $useMycli ? null : $databaseHelper->getMysqlClientToolOptionFile());
 
-        $this->processCommand(implode(' ', $args));
         return Command::SUCCESS;
-    }
-
-    /**
-     * Execute a command
-     */
-    private function processCommand(string $command): void
-    {
-        $descriptorSpec = [0 => STDIN, 1 => STDOUT, 2 => STDERR];
-
-        $pipes = [];
-        $process = proc_open($command, $descriptorSpec, $pipes);
-
-        if (is_resource($process)) {
-            proc_close($process);
-        }
-    }
-
-    private function getMysqlClientToolConnection(): string
-    {
-        $databaseHelper = $this->getDatabaseHelper();
-        return $databaseHelper->getMysqlClientToolConnectionString();
     }
 }

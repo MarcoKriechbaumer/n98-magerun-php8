@@ -243,7 +243,7 @@ HELP;
         // communicate early what is required for this command to run (is enabled)
         $enabler = new Enabler($this);
         $enabler->functionExists('exec');
-        $enabler->functionExists('passthru');
+        $enabler->functionExists('proc_open');
         $enabler->operatingSystemIsNotWindows();
 
         // TODO(tk): Merge the DatabaseHelper, detectDbSettings is within abstract database command base class
@@ -302,12 +302,15 @@ HELP;
 
         $databaseHelper = $this->getDatabaseHelper();
 
-        $mysqlClientToolConnectionString = $databaseHelper->getMysqlClientToolConnectionString();
+        // printed commands are run later, without the option file on file descriptor 3
+        $passwordOnFd3 = !$this->printsCommands($input);
+        // --defaults-file of the option file has to be the first argument, so the options follow the connection
+        $mysqlClientToolConnectionString = $databaseHelper->getMysqlClientToolConnectionString($passwordOnFd3);
 
         $stripTables = $this->stripTables($input, $output);
         if ($stripTables !== []) {
             // dump structure for strip-tables
-            $exec = 'mysqldump ' . $dumpOptions . '--no-data ' . $mysqlClientToolConnectionString;
+            $exec = 'mysqldump ' . $mysqlClientToolConnectionString . ' ' . $dumpOptions . '--no-data';
             $exec .= ' ' . implode(' ', $stripTables);
             $exec .= $this->postDumpPipeCommands();
             $exec = $compressor->getCompressingCommand($exec);
@@ -326,7 +329,7 @@ HELP;
             $ignore .= '--ignore-table=' . $this->dbSettings['dbname'] . '.' . $ignoreTable . ' ';
         }
 
-        $exec = 'mysqldump ' . $dumpOptions . $mysqlClientToolConnectionString . ' ' . $ignore;
+        $exec = 'mysqldump ' . $mysqlClientToolConnectionString . ' ' . $dumpOptions . $ignore;
         $exec .= $this->postDumpPipeCommands();
         $exec = $compressor->getCompressingCommand($exec);
         if (!$input->getOption('stdout')) {
@@ -342,7 +345,7 @@ HELP;
      */
     private function runExecs(array $execs, string $fileName, InputInterface $input, OutputInterface $output): bool
     {
-        if ($input->getOption('only-command') && !$input->getOption('print-only-filename')) {
+        if ($this->printsCommands($input)) {
             foreach ($execs as $exec) {
                 $output->writeln($exec);
             }
@@ -374,14 +377,20 @@ HELP;
         return true;
     }
 
+    private function printsCommands(InputInterface $input): bool
+    {
+        return $input->getOption('only-command') && !$input->getOption('print-only-filename');
+    }
+
     private function runExec(string $command, InputInterface $input, OutputInterface $output): bool
     {
         $commandOutput = '';
 
+        $optionFile = $this->getDatabaseHelper()->getMysqlClientToolOptionFile();
         if ($input->getOption('stdout')) {
-            passthru($command, $returnCode);
+            $returnCode = Exec::passthru($command, $optionFile);
         } else {
-            Exec::run($command, $commandOutput, $returnCode);
+            Exec::run($command, $commandOutput, $returnCode, $optionFile);
         }
 
         if ($returnCode > 0) {

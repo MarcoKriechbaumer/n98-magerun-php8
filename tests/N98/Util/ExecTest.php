@@ -49,4 +49,26 @@ final class ExecTest extends TestCase
             $this->assertStringContainsString("-u'root' -p'***' 'magento'", $message);
         }
     }
+
+    public function testFd3Input()
+    {
+        Exec::run('cat /dev/fd/' . Exec::INPUT_FILE_DESCRIPTOR, $commandOutput, $returnCode, "line 1\nline 2\n");
+
+        $this->assertSame(Exec::CODE_CLEAN_EXIT, $returnCode);
+        $this->assertSame('line 1' . PHP_EOL . 'line 2' . PHP_EOL, $commandOutput);
+    }
+
+    public function testFd3InputException()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Exit status 3');
+        Exec::run('cat /dev/fd/3 > /dev/null; exit 3', $commandOutput, $returnCode, 'input');
+    }
+
+    public function testPassthruReturnsExitStatus()
+    {
+        $this->assertSame(0, Exec::passthru('test "$(cat /dev/fd/3)" = secret', 'secret'));
+        $this->assertSame(1, Exec::passthru('test "$(cat /dev/fd/3)" = secret', 'other'));
+        $this->assertSame(3, Exec::passthru('exit 3'));
+    }
 }

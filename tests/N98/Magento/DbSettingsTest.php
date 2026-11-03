@@ -65,4 +65,61 @@ final class DbSettingsTest extends TestCase
         // it's still leaky:
         // self::assertInstanceOf(SimpleXMLElement::class, $settings['pdoType']);
     }
+
+    public function testMysqlClientToolConnectionString()
+    {
+        $dbSettings = new DbSettings(__DIR__ . '/local.xml');
+
+        $this->assertSame(
+            "-h 'localhost' -u'user' -p'pass' 'magento'",
+            $dbSettings->getMysqlClientToolConnectionString(),
+        );
+        $this->assertSame(
+            "--defaults-file=/dev/fd/3 -h 'localhost' -u'user' 'magento'",
+            $dbSettings->getMysqlClientToolConnectionString(passwordOnFd3: true),
+        );
+    }
+
+    public function testMysqlClientToolOptionFile()
+    {
+        $localXml = tempnam(sys_get_temp_dir(), 'n98-magerun-test-');
+        $this->assertIsString($localXml);
+        file_put_contents($localXml, str_replace(
+            '<password>pass</password>',
+            '<password><![CDATA[se"c#r\\et\'' . "\n" . ' x]]></password>',
+            (string) file_get_contents(__DIR__ . '/local.xml'),
+        ));
+
+        try {
+            $dbSettings = new DbSettings($localXml);
+            $this->assertSame(
+                "[client]\npassword=\"se\\\"c#r\\\\et'\\n x\"\n",
+                $dbSettings->getMysqlClientToolOptionFile(),
+            );
+        } finally {
+            unlink($localXml);
+        }
+    }
+
+    public function testNoMysqlClientToolOptionFileWithoutPassword()
+    {
+        $localXml = tempnam(sys_get_temp_dir(), 'n98-magerun-test-');
+        $this->assertIsString($localXml);
+        file_put_contents($localXml, str_replace(
+            '<password>pass</password>',
+            '<password/>',
+            (string) file_get_contents(__DIR__ . '/local.xml'),
+        ));
+
+        try {
+            $dbSettings = new DbSettings($localXml);
+            $this->assertNull($dbSettings->getMysqlClientToolOptionFile());
+            $this->assertSame(
+                "-h 'localhost' -u'user' 'magento'",
+                $dbSettings->getMysqlClientToolConnectionString(passwordOnFd3: true),
+            );
+        } finally {
+            unlink($localXml);
+        }
+    }
 }

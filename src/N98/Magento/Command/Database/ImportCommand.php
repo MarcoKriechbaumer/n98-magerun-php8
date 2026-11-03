@@ -156,7 +156,8 @@ HELP;
         }
 
         // create import command
-        $exec = 'mysql ' . $databaseHelper->getMysqlClientToolConnectionString();
+        $passwordOnFd3 = !$input->getOption('only-command');
+        $exec = 'mysql ' . $databaseHelper->getMysqlClientToolConnectionString($passwordOnFd3);
         if ($fileName !== '-') {
             $exec = $compressor->getDecompressingCommand($exec, $fileName);
         }
@@ -216,7 +217,7 @@ HELP;
             . $this->dbSettings['dbname'] . '</info>',
         );
 
-        Exec::run($exec, $commandOutput, $returnValue);
+        Exec::run($exec, $commandOutput, $returnValue, $this->getDatabaseHelper()->getMysqlClientToolOptionFile());
 
         if ($returnValue != 0) {
             $output->writeln('<error>' . $commandOutput . '</error>');

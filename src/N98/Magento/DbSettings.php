@@ -9,6 +9,8 @@ use ArrayIterator;
 use BadMethodCallException;
 use InvalidArgumentException;
 use IteratorAggregate;
+use N98\Util\Exec;
+use N98\Util\OperatingSystem;
 use PDO;
 use PDOException;
 use RuntimeException;
@@ -215,9 +217,25 @@ class DbSettings implements ArrayAccess, IteratorAggregate
         return $pdo;
     }
 
-    public function getMysqlClientToolConnectionString(): string
+    /**
+     * Connection arguments for the mysql / mysqldump command line tools.
+     *
+     * With $passwordOnFd3 the password is not part of the arguments, so it does not show up in the process list
+     * or in error messages. Instead the tool reads it from an option file on file descriptor 3 (--defaults-file,
+     * so this has to be the first argument of the tool). Run the command with Exec::run() or Exec::passthru()
+     * and getMysqlClientToolOptionFile() as $fd3Input.
+     *
+     * Without $passwordOnFd3, or on Windows, the password is passed as -p argument, e.g. for commands that are
+     * printed to be run later.
+     */
+    public function getMysqlClientToolConnectionString(bool $passwordOnFd3 = false): string
     {
         $segments = [];
+
+        $useOptionFile = $passwordOnFd3 && $this->getMysqlClientToolOptionFile() !== null;
+        if ($useOptionFile) {
+            $segments[] = '--defaults-file=/dev/fd/' . Exec::INPUT_FILE_DESCRIPTOR;
+        }
 
         if (null !== $this->config['unix_socket']) {
             $segments[] = '--socket=' . escapeshellarg($this->config['unix_socket']);
@@ -230,13 +248,31 @@ class DbSettings implements ArrayAccess, IteratorAggregate
             $segments[] = '-P' . escapeshellarg($this->config['port']);
         }
 
-        if (strlen($this->config['password']) !== 0) {
+        if (!$useOptionFile && strlen($this->config['password']) !== 0) {
             $segments[] = '-p' . escapeshellarg($this->config['password']);
         }
 
         $segments[] = escapeshellarg($this->config['dbname']);
 
         return implode(' ', $segments);
+    }
+
+    /**
+     * MySQL option file with the password, for the --defaults-file argument of
+     * getMysqlClientToolConnectionString(). It is handed over through a pipe and never written to disk.
+     *
+     * Null if there is no password, or on Windows, which has no /dev/fd.
+     */
+    public function getMysqlClientToolOptionFile(): ?string
+    {
+        if ((string) $this->config['password'] === '' || OperatingSystem::isWindows()) {
+            return null;
+        }
+
+        // the value is enclosed in double quotes, so "#" is no comment; inside them \ " and line breaks need escaping
+        $password = strtr($this->config['password'], ['\\' => '\\\\', '"' => '\\"', "\n" => '\\n', "\r" => '\\r']);
+
+        return "[client]\npassword=\"" . $password . "\"\n";
     }
 
     /**

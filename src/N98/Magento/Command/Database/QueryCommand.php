@@ -66,12 +66,17 @@ HELP;
         $query = $this->getOrAskForArgument('query', $input, $output, 'SQL Query');
 
         $databaseHelper = $this->getDatabaseHelper();
-        $exec = sprintf('mysql %s -e %s', $databaseHelper->getMysqlClientToolConnectionString(), escapeshellarg($query));
+        $onlyCommand = (bool) $input->getOption('only-command');
+        $exec = sprintf(
+            'mysql %s -e %s',
+            $databaseHelper->getMysqlClientToolConnectionString(passwordOnFd3: !$onlyCommand),
+            escapeshellarg($query),
+        );
 
-        if ($input->getOption('only-command')) {
+        if ($onlyCommand) {
             $output->writeln($exec);
         } else {
-            Exec::run($exec, $commandOutput, $returnValue);
+            Exec::run($exec, $commandOutput, $returnValue, $databaseHelper->getMysqlClientToolOptionFile());
             $output->writeln($commandOutput);
             if ($returnValue > 0) {
                 $output->writeln('<error>' . $commandOutput . '</error>');

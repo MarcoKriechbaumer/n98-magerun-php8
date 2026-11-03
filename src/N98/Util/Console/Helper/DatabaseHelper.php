@@ -117,9 +117,20 @@ class DatabaseHelper extends AbstractHelper
         return false;
     }
 
-    public function getMysqlClientToolConnectionString(): string
+    /**
+     * @see DbSettings::getMysqlClientToolConnectionString()
+     */
+    public function getMysqlClientToolConnectionString(bool $passwordOnFd3 = false): string
     {
-        return $this->getDbSettings()->getMysqlClientToolConnectionString();
+        return $this->getDbSettings()->getMysqlClientToolConnectionString($passwordOnFd3);
+    }
+
+    /**
+     * @see DbSettings::getMysqlClientToolOptionFile()
+     */
+    public function getMysqlClientToolOptionFile(): ?string
+    {
+        return $this->getDbSettings()->getMysqlClientToolOptionFile();
     }
 
     /**

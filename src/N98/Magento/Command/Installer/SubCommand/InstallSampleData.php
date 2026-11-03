@@ -119,9 +119,10 @@ class InstallSampleData extends AbstractSubCommand
 
         if (isset($sampleDataSqlFile[0])) {
             $this->output->writeln('<info>Import sample data db data</info>');
-            $exec = 'mysql ' . $databaseHelper->getMysqlClientToolConnectionString() . ' < ' . $sampleDataSqlFile[0];
+            $exec = 'mysql ' . $databaseHelper->getMysqlClientToolConnectionString(passwordOnFd3: true)
+                . ' < ' . $sampleDataSqlFile[0];
 
-            Exec::run($exec, $commandOutput, $returnValue);
+            Exec::run($exec, $commandOutput, $returnValue, $databaseHelper->getMysqlClientToolOptionFile());
 
             if ($returnValue != 0) {
                 $this->output->writeln('<error>' . $commandOutput . '</error>');

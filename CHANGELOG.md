@@ -1,6 +1,14 @@
 RECENT CHANGES
 ==============
 
+4.1.1
+-----
+
+- Imp: Composer package lists the maintainer of the fork, upstream authors marked as such
+- Imp: Version string shows the maintainer of the fork
+- Fix: Dependency constraints allowed versions of psysh, symfony/process, symfony/validator, symfony/yaml and twig
+       with security advisories when installed via Composer
+
 4.1.0
 -----
 

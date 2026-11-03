@@ -26,7 +26,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Linux Setup
         run: ./.github/workflows/scripts/linux-setup.sh
@@ -39,7 +39,7 @@ jobs:
           coverage: none
 
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cache/composer
@@ -82,7 +82,7 @@ jobs:
           COMPOSER_VENDOR_PATH : "${{ github.workspace }}/magento/vendor"
 
       - name: Report coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           file: ./build/coverage/clover.xml
 

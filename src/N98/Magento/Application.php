@@ -371,7 +371,7 @@ class Application extends BaseApplication
 
     public function getLongVersion(): string
     {
-        return parent::getLongVersion() . ' by <info>valantic CEC</info>';
+        return parent::getLongVersion() . ' by <info>Marco Kriechbaumer</info>';
     }
 
     public function isMagentoEnterprise(): bool

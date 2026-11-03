@@ -82,7 +82,7 @@ The command should execute successfully and show you the version number of n98-m
 
 .. code-block:: sh
 
-    n98-magerun 4.1.0 by valantic CEC
+    n98-magerun 4.1.0 by Marco Kriechbaumer
 
 You now have successfully installed Magerun! You can tailor the installation further like installing it system-wide and
 enable autocomplete - read on for more information about these and other features.
@@ -125,7 +125,7 @@ Then require it and execute it from the vendor's bin folder:
     composer require marcokriechbaumer/n98-magerun-php8:^4.0
     # ...
     ./vendor/bin/n98-magerun --version
-    n98-magerun 4.1.0 by valantic CEC
+    n98-magerun 4.1.0 by Marco Kriechbaumer
 
 Install from source
 """""""""""""""""""

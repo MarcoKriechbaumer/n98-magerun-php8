@@ -110,30 +110,32 @@ HELP;
     protected function timeElapsedString($datetime, bool $full = false): string
     {
         if (is_numeric($datetime)) {
-            $datetime = Carbon::now()->getTimestamp() - $datetime;
-            $datetime = '@' . $datetime;
+            $datetime = '@' . (Carbon::now()->getTimestamp() - (int) $datetime);
         }
 
-        $now = Carbon::now();
-        $ago = new DateTime($datetime);
-        $diff = $now->diff($ago);
+        $diff = Carbon::now()->diff(new DateTime($datetime));
 
-        $diff->w = floor($diff->d / 7);
-        $diff->d -= (int) $diff->w * 7;
+        $units = [
+            'year'   => (int) $diff->y,
+            'month'  => (int) $diff->m,
+            'week'   => intdiv((int) $diff->d, 7),
+            'day'    => (int) $diff->d % 7,
+            'hour'   => (int) $diff->h,
+            'minute' => (int) $diff->i,
+            'second' => (int) $diff->s,
+        ];
 
-        $string = ['y' => 'year', 'm' => 'month', 'h' => 'hour', 'i' => 'minute', 's' => 'second'];
-        foreach ($string as $k => &$v) {
-            if ($diff->$k) {
-                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-            } else {
-                unset($string[$k]);
+        $parts = [];
+        foreach ($units as $unit => $value) {
+            if ($value > 0) {
+                $parts[] = $value . ' ' . $unit . ($value > 1 ? 's' : '');
             }
         }
 
         if (!$full) {
-            $string = array_slice($string, 0, 1);
+            $parts = array_slice($parts, 0, 1);
         }
 
-        return $string !== [] ? implode(', ', $string) . ' ago' : 'just now';
+        return $parts !== [] ? implode(', ', $parts) . ' ago' : 'just now';
     }
 }

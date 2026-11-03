@@ -102,7 +102,7 @@ class DatabaseHelper extends AbstractHelper
         }
 
         $result = $statement->fetchAll(PDO::FETCH_COLUMN);
-        if (!$result) {
+        if ($result === []) {
             return false;
         }
 
@@ -283,10 +283,8 @@ class DatabaseHelper extends AbstractHelper
                     [':like' => $this->dbSettings['prefix'] . $entry],
                 );
                 $rows = $sth->fetchAll();
-                if ($rows) {
-                    foreach ($rows as $row) {
-                        $resolvedList[] = $row[0];
-                    }
+                foreach ($rows as $row) {
+                    $resolvedList[] = $row[0];
                 }
 
                 continue;
@@ -439,7 +437,7 @@ class DatabaseHelper extends AbstractHelper
             $return = [];
 
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-            if (!$result) {
+            if ($result === []) {
                 return $return;
             }
 

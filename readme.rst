@@ -2,8 +2,6 @@
 n98-magerun for PHP 8.2+ and OpenMage LTS 20.10+
 ===================================================
 
-.. image:: .github/doc/magerun-logo.png
-
 The n98 magerun cli tools provides some handy tools to work with Magento 1 / OpenMage LTS from command line.
 
 This is a fork of `netz98/n98-magerun <https://github.com/netz98/n98-magerun>`_, ported to PHP 8.2 - 8.5 and
@@ -353,6 +351,19 @@ Print database information
 
     setting               Only output value of named setting
 
+
+MySQL CLI tools and the database password
+"""""""""""""""""""""""""""""""""""""""""
+
+`db:query`, `db:import`, `db:dump` and `db:console` pass the database password to `mysql` / `mysqldump`
+through a pipe (`--defaults-file=/dev/fd/3`), not as command line argument. It does not show up in the process
+list or in error messages and is never written to disk.
+
+The connection settings come from local.xml only: these commands do not read `/etc/my.cnf` or `~/.my.cnf`.
+
+Commands printed with `--only-command` and the `MySQL-Cli-String` of `db:info` still contain the password as
+`-p` argument, as they are meant to be run later. The same applies to `db:console --use-mycli-instead-of-mysql`
+and to Windows.
 
 Dump database
 """""""""""""

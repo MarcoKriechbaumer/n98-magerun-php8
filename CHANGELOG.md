@@ -1,6 +1,17 @@
 RECENT CHANGES
 ==============
 
+4.1.0
+-----
+
+- Imp: db:query, db:import, db:dump, db:console and the sample data import pass the database password to
+       mysql / mysqldump through a pipe (`--defaults-file=/dev/fd/3`) instead of `-p`, so it is no longer
+       visible in the process list. These commands do not read /etc/my.cnf and ~/.my.cnf anymore.
+       `--only-command`, db:info, db:console with mycli and Windows still use `-p`.
+- Imp: Update 3rd party dependencies (Twig 3.30, PHPStan 2.3, Rector 2.8, Requests 2.0.21) and GitHub Actions
+- Fix: Failed db:query, db:import, db:dump and sample data import showed the database password in the error message
+- Fix: db:status did not show the weeks and days of the uptime
+
 4.0.0
 -----
 

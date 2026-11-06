@@ -25,7 +25,7 @@ class MagentoHelper extends TestCase
 
     public function testHelperInstance()
     {
-        self::assertInstanceOf(\N98\Util\Console\Helper\MagentoHelper::class, $this->getHelper());
+        $this->assertInstanceOf(\N98\Util\Console\Helper\MagentoHelper::class, $this->getHelper());
     }
 
     public function testDetectMagentoInStandardFolder()
@@ -38,7 +38,7 @@ class MagentoHelper extends TestCase
         $magentoHelper = $this->getHelper();
         $magentoHelper->detect(vfsStream::url('root'), []);
 
-        self::assertSame(vfsStream::url('root'), $magentoHelper->getRootFolder());
+        $this->assertSame(vfsStream::url('root'), $magentoHelper->getRootFolder());
     }
 
     public function testDetectMagentoInHtdocsSubfolder()
@@ -56,7 +56,7 @@ class MagentoHelper extends TestCase
             [vfsStream::url('root/www'), vfsStream::url('root/public'), vfsStream::url('root/htdocs')],
         );
 
-        self::assertSame(vfsStream::url('root/htdocs'), $magentoHelper->getRootFolder());
+        $this->assertSame(vfsStream::url('root/htdocs'), $magentoHelper->getRootFolder());
     }
 
     public function testDetectMagentoFailed()
@@ -73,7 +73,7 @@ class MagentoHelper extends TestCase
             vfsStream::url('root'),
         );
 
-        self::assertNull($magentoHelper->getRootFolder());
+        $this->assertNull($magentoHelper->getRootFolder());
     }
 
     public function testDetectMagentoInModmanInfrastructure()
@@ -91,6 +91,6 @@ class MagentoHelper extends TestCase
         );
 
         // Verify if this could be checked with more elegance
-        self::assertSame(vfsStream::url('root/../root/htdocs/magento_root'), $magentoHelper->getRootFolder());
+        $this->assertSame(vfsStream::url('root/../root/htdocs/magento_root'), $magentoHelper->getRootFolder());
     }
 }

@@ -21,13 +21,13 @@ class LogCommand extends TestCase
         $commandTester->execute(
             ['command'  => $command->getName(), '--global' => true, '--on'     => true],
         );
-        self::assertMatchesRegularExpression('/Development Log/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/Development Log/', $commandTester->getDisplay());
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             ['command'  => $command->getName(), '--global' => true, '--off'    => true],
         );
 
-        self::assertMatchesRegularExpression('/Development Log/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/Development Log/', $commandTester->getDisplay());
     }
 }

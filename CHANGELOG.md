@@ -1,6 +1,11 @@
 RECENT CHANGES
 ==============
 
+4.1.2
+-----
+
+- Fix: Interactive email/password prompts (e.g. customer:create) crashed with a TypeError on an empty answer
+
 4.1.1
 -----
 

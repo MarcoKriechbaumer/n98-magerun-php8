@@ -1,6 +1,12 @@
 RECENT CHANGES
 ==============
 
+4.1.3
+-----
+
+- Fix: Update symfony/validator and symfony/yaml to 6.4.50 (security advisories GHSA-4qpf-57w4-m3wc and
+       GHSA-hwfg-qwvh-2wfx), Composer constraints no longer allow the affected versions
+
 4.1.2
 -----
 

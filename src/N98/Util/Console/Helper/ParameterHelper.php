@@ -246,6 +246,8 @@ class ParameterHelper extends AbstractHelper
             $output,
             $question,
             function ($inputValue) use ($collection, $name) {
+                // QuestionHelper passes null for an empty answer
+                $inputValue = (string) $inputValue;
                 $errors = $this->validateValue($name, $inputValue, $collection);
                 if ($errors->count() > 0) {
                     throw new InvalidArgumentException((string) $errors[0]->getMessage());
